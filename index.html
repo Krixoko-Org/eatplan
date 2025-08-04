@@ -19,9 +19,16 @@
       text-align: center;
     }
     .container {
-      max-width: 960px;
+      max-width: 100%;
       margin: auto;
       padding: 20px;
+      overflow-x: auto;
+    }
+    .days-wrapper {
+      display: flex;
+      gap: 20px;
+      min-width: fit-content;
+      padding-bottom: 10px;
     }
     h1, h2 {
       color: #4CAF50;
@@ -29,9 +36,11 @@
     .day {
       background: #fff;
       padding: 15px;
-      margin: 20px 0;
+      margin: 0;
       border-left: 5px solid #4CAF50;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      min-width: 300px;
+      flex-shrink: 0;
     }
     ul {
       list-style-type: none;
@@ -60,6 +69,7 @@
   </header>
 
   <div class="container">
+    <div class="days-wrapper">
     <div class="day">
       <h2>Montag</h2>
       <ul>
@@ -135,6 +145,7 @@
         <li><strong>16:00 – Snack:</strong> Joghurt mit Honig, Wasser</li>
         <li><strong>19:00 – Abendessen:</strong> Kartoffel-Gemüsesuppe mit Brot, Wasser</li>
       </ul>
+    </div>
     </div>
   </div>
 
