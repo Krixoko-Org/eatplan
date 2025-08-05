@@ -5,96 +5,145 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>7-Tage Ernährungsplan – Nierenstein-Prophylaxe</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; color: #333; line-height: 1.6; margin: 0; }
-    header { background: #4CAF50; color: #fff; padding: 20px 0; text-align: center; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
-    .container { max-width: 100%; margin: 0 auto; padding: 16px 0 0; }
+    :root {
+      --bg: #121212;
+      --card: #1e1e1e;
+      --text: #e6e6e6;
+      --muted: #bdbdbd;
+      --primary: #7ecb7e;
+      --primary-strong: #5fbf67;
+      --chip-bg: #1b3320;
+      --chip-text: #b5e2b7;
+      --shadow: rgba(0,0,0,0.4);
+      --scroll-track: #2a2a2a;
+      --scroll-thumb: #4a8f54;
+    }
+    body.light {
+      --bg: #f4f4f4;
+      --card: #ffffff;
+      --text: #333333;
+      --muted: #666666;
+      --primary: #4CAF50;
+      --primary-strong: #3f9c45;
+      --chip-bg: #e8f5e9;
+      --chip-text: #2e7d32;
+      --shadow: rgba(0,0,0,0.12);
+      --scroll-track: #e8e8e8;
+      --scroll-thumb: #9ad0a0;
+    }
 
-    /* Horizontal columns with snap scrolling */
+    html, body { height: 100%; }
+    body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; transition: background 0.2s ease, color 0.2s ease; }
+
+    header { background: var(--primary); color: #fff; padding: 16px; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 8px var(--shadow); }
+    header .topbar { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    header h1 { margin: 0; font-size: 1.3rem; }
+    header p { margin: 0; opacity: 0.9; }
+
+    .controls { display: flex; gap: 8px; align-items: center; }
+    .btn { background: var(--card); color: var(--text); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: transform .15s ease, background .2s, color .2s, border-color .2s; }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-strong); color: #fff; border-color: transparent; }
+
+    .container { max-width: 100%; margin: 0 auto; padding: 12px 0 0; }
+
     .week-grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 1fr); gap: 16px; padding: 12px 16px 20px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding: 16px; -webkit-overflow-scrolling: touch; }
     .week-grid::-webkit-scrollbar { height: 10px; }
-    .week-grid::-webkit-scrollbar-track { background: #e8e8e8; border-radius: 8px; }
-    .week-grid::-webkit-scrollbar-thumb { background: #9ad0a0; border-radius: 8px; }
-    .week-grid::-webkit-scrollbar-thumb:hover { background: #7fc786; }
+    .week-grid::-webkit-scrollbar-track { background: var(--scroll-track); border-radius: 8px; }
+    .week-grid::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 8px; }
+    .week-grid::-webkit-scrollbar-thumb:hover { background: var(--primary-strong); }
 
-    h1, h2 { color: #4CAF50; }
+    h1, h2 { color: #fff; }
 
-    .day { background: #fff; padding: 0; margin: 0; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); scroll-snap-align: start; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; min-height: 70vh; }
-    .day:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+    .day { background: var(--card); border-radius: 12px; box-shadow: 0 2px 10px var(--shadow); scroll-snap-align: start; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; min-height: 70vh; }
+    .day:hover { transform: translateY(-3px); box-shadow: 0 6px 18px var(--shadow); }
 
-    .day-header { position: sticky; top: 68px; background: linear-gradient(180deg, #eaf7eb, #ffffff 80%); padding: 14px 16px; border-bottom: 1px solid #e6f0e6; border-top-left-radius: 10px; border-top-right-radius: 10px; z-index: 5; }
-    .day h2 { margin: 0; font-size: 1.25rem; }
+    .day-header { position: sticky; top: 72px; background: linear-gradient(180deg, rgba(126,203,126,0.12), rgba(0,0,0,0) 80%), var(--card); padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); border-top-left-radius: 12px; border-top-right-radius: 12px; z-index: 5; }
+    .day h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
     .day-content { padding: 12px 16px 16px; }
 
     ul { list-style-type: none; padding: 0; margin: 0; }
-    li { margin: 8px 0; background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 10px 12px; }
-    li strong { color: #3b8a3f; }
-    .meal-chip { display: inline-block; font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: #e8f5e9; color: #2e7d32; margin-left: 8px; }
+    li { margin: 8px 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; }
+    li strong { color: var(--primary); }
+    .meal-chip { display: inline-block; font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; background: var(--chip-bg); color: var(--chip-text); margin-left: 8px; }
 
-    footer { text-align: center; padding: 20px; background: #ddd; font-size: 0.9em; }
+    footer { text-align: center; padding: 20px; background: #1a1a1a; color: var(--muted); font-size: 0.9em; }
 
-    @media (max-width: 600px) { body { font-size: 16px; } .week-grid { grid-auto-columns: 85%; } .day-header { top: 60px; } }
+    @media (max-width: 600px) { .week-grid { grid-auto-columns: 85%; } .day-header { top: 64px; } header h1 { font-size: 1.1rem; } }
   </style>
 </head>
-<body>
+<body class="light">
   <header>
-    <h1>7-Tage Ernährungsplan</h1>
-    <p>Oxalatarm – Nierenstein-Prophylaxe</p>
+    <div class="topbar">
+      <div>
+        <h1>7-Tage Ernährungsplan</h1>
+        <p>Oxalatarm – Nierenstein-Prophylaxe</p>
+      </div>
+      <div class="controls">
+        <button id="themeToggle" class="btn" aria-pressed="false" aria-label="Darstellung umschalten">🌙 Dark</button>
+        <button id="notifyBtn" class="btn" aria-label="Benachrichtigungen aktivieren">🔔 Benachrichtigen</button>
+      </div>
+    </div>
   </header>
 
   <div class="container">
     <div class="week-grid">
+      <!-- Montag -->
       <div class="day">
         <div class="day-header"><h2>Montag</h2></div>
         <div class="day-content">
           <ul>
-            <li><strong>07:00 – Frühstück:</strong> Vollkornbrötchen, Schinken, Ei, Wasser, grüner Tee <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Apfel, Mandeln, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Hähnchenbrust, Reis, Karotten, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Joghurt, Birne, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark, Gurkensalat, Wasser <span class="meal-chip">Abend</span></li>
+            <li><strong>07:00 – Frühstück:</strong> Vollkornbrötchen, fettarmer Käse, Ei, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Apfel, Joghurt natur (calciumreich), Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Hähnchenbrust, Vollkornreis, gedämpfte Karotten, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Hüttenkäse mit Birne, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Pellkartoffeln mit Magerquark und Gurkensalat, Wasser <span class="meal-chip">Abend</span></li>
           </ul>
         </div>
       </div>
 
+      <!-- Dienstag -->
       <div class="day">
         <div class="day-header"><h2>Dienstag</h2></div>
         <div class="day-content">
           <ul>
-            <li><strong>07:00 – Frühstück:</strong> Haferflocken, Milch, Banane, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>07:00 – Frühstück:</strong> Haferflocken mit Milch, Banane, Wasser <span class="meal-chip">Frühstück</span></li>
             <li><strong>10:00 – Snack:</strong> Butterkekse, Pfirsich, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Fischfilet, Kartoffeln, Blumenkohl, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Gedämpfter Lachs, Kartoffeln, Blumenkohl, Wasser <span class="meal-chip">Mittag</span></li>
             <li><strong>16:00 – Snack:</strong> Quark mit Honig, Wasser <span class="meal-chip">Snack</span></li>
             <li><strong>19:00 – Abendessen:</strong> Vollkornbrot mit Käse und Tomaten, Wasser <span class="meal-chip">Abend</span></li>
           </ul>
         </div>
       </div>
 
+      <!-- Mittwoch -->
       <div class="day">
         <div class="day-header"><h2>Mittwoch</h2></div>
         <div class="day-content">
           <ul>
-            <li><strong>07:00 – Frühstück:</strong> Toast mit Frischkäse, Gurke, Tee, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Joghurt mit Heidelbeeren, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Putenschnitzel, Nudeln, Zucchini, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Birne, Studentenfutter, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Eierpfannkuchen mit Apfelmus, Wasser <span class="meal-chip">Abend</span></li>
+            <li><strong>07:00 – Frühstück:</strong> Toast mit Frischkäse, Gurke, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Joghurt mit Heidelbeeren (kleine Portion), Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Putenbrust, Vollkornnudeln, Zucchini, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Birne, Reiswaffeln, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Eieromelette mit Apfelmus-Beilage, Wasser <span class="meal-chip">Abend</span></li>
           </ul>
         </div>
       </div>
 
+      <!-- Donnerstag -->
       <div class="day">
         <div class="day-header"><h2>Donnerstag</h2></div>
         <div class="day-content">
           <ul>
-            <li><strong>07:00 – Frühstück:</strong> Müsli (ohne Nüsse), Milch, Apfel, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>07:00 – Frühstück:</strong> Müsli ohne Nüsse/Samen, Milch, Apfel, Wasser <span class="meal-chip">Frühstück</span></li>
             <li><strong>10:00 – Snack:</strong> Knäckebrot mit Frischkäse, Wasser <span class="meal-chip">Snack</span></li>
             <li><strong>13:00 – Mittagessen:</strong> Rindergulasch, Reis, Kohlrabi, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Obstsalat, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>16:00 – Snack:</strong> Obstsalat (ohne Nüsse), Wasser <span class="meal-chip">Snack</span></li>
             <li><strong>19:00 – Abendessen:</strong> Kartoffelsuppe, Vollkornbrot, Wasser <span class="meal-chip">Abend</span></li>
           </ul>
         </div>
       </div>
 
+      <!-- Freitag -->
       <div class="day">
         <div class="day-header"><h2>Freitag</h2></div>
         <div class="day-content">
@@ -108,6 +157,7 @@
         </div>
       </div>
 
+      <!-- Samstag -->
       <div class="day">
         <div class="day-header"><h2>Samstag</h2></div>
         <div class="day-content">
@@ -121,87 +171,99 @@
         </div>
       </div>
 
+      <!-- Sonntag -->
       <div class="day">
         <div class="day-header"><h2>Sonntag</h2></div>
         <div class="day-content">
           <ul>
             <li><strong>08:00 – Frühstück:</strong> Vollkornbrot mit Schinken und Gurke, Wasser <span class="meal-chip">Frühstück</span></li>
             <li><strong>11:00 – Snack:</strong> Birne, Butterkekse, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>
-            <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark, Gurkensalat, Wasser <span class="meal-chip">Abend</span></li>
+            <li><strong>14:00 – Mittagessen:</strong> Putengeschnetzeltes, Reis, Möhren, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Joghurt mit Honig, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Kartoffel-Gemüsesuppe mit Brot, Wasser <span class="meal-chip">Abend</span></li>
           </ul>
         </div>
       </div>
 
-      <div class="day">
-        <div class="day-header"><h2>Dienstag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>07:00 – Frühstück:</strong> Haferflocken, Milch, Banane, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Butterkekse, Pfirsich, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Fischfilet, Kartoffeln, Blumenkohl, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Quark mit Honig, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Vollkornbrot mit Käse und Tomaten, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
+    </div>
+  </div>
 
-      <div class="day">
-        <div class="day-header"><h2>Mittwoch</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>07:00 – Frühstück:</strong> Toast mit Frischkäse, Gurke, Tee, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Joghurt mit Heidelbeeren, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Putenschnitzel, Nudeln, Zucchini, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Birne, Studentenfutter, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Eierpfannkuchen mit Apfelmus, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
+  <footer>
+    © 2024 Ernährungsplan – Unterstützung der Nierensteinprophylaxe (Kalziumoxalat)
+  </footer>
 
-      <div class="day">
-        <div class="day-header"><h2>Donnerstag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>07:00 – Frühstück:</strong> Müsli (ohne Nüsse), Milch, Apfel, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Knäckebrot mit Frischkäse, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Rindergulasch, Reis, Kohlrabi, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Obstsalat, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Kartoffelsuppe, Vollkornbrot, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
+  <script>
+    // Theme toggle with localStorage
+    (function() {
+      const body = document.body;
+      const btn = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('theme') || 'light';
+      body.classList.toggle('light', saved === 'light');
+      body.classList.toggle('dark', saved === 'dark');
+      updateBtn();
 
-      <div class="day">
-        <div class="day-header"><h2>Freitag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>07:00 – Frühstück:</strong> Brötchen mit Marmelade und Ei, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Banane, Naturjoghurt, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Seelachs, Kartoffelpüree, Brokkoli, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Reiswaffeln mit Frischkäse, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Gemüseauflauf mit Käse, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
+      btn.addEventListener('click', () => {
+        const isLight = body.classList.contains('light');
+        body.classList.toggle('light', !isLight);
+        body.classList.toggle('dark', isLight);
+        localStorage.setItem('theme', isLight ? 'dark' : 'light');
+        updateBtn();
+      });
 
-      <div class="day">
-        <div class="day-header"><h2>Samstag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>08:00 – Frühstück:</strong> Rührei, Toast, Tomate, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>11:00 – Snack:</strong> Griechischer Joghurt mit Honig, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>14:00 – Mittagessen:</strong> Hähnchen-Reispfanne mit Paprika, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Apfel, Käsewürfel, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark und Kräutern, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
+      function updateBtn(){
+        const isLight = body.classList.contains('light');
+        btn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
+        btn.setAttribute('aria-pressed', (!isLight).toString());
+      }
+    })();
 
-      <div class="day">
-        <div class="day-header"><h2>Sonntag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>08:00 – Frühstück:</strong> Vollkornbrot mit Schinken und Gurke, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>11:00 – Snack:</strong> Birne, Butterkekse, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>
+    // Browser notifications opt-in and simple reminders
+    (function() {
+      const btn = document.getElementById('notifyBtn');
+      let reminderIntervalId = null;
+
+      btn.addEventListener('click', async () => {
+        try {
+          const permission = await Notification.requestPermission();
+          if (permission !== 'granted') {
+            alert('Benachrichtigungen wurden nicht erlaubt.');
+            return;
+          }
+          new Notification('Benachrichtigungen aktiviert', { body: 'Du erhältst Erinnerungen zu Mahlzeiten.' });
+
+          // Optional: schedule gentle reminders every 3 hours (foreground only)
+          if (reminderIntervalId) clearInterval(reminderIntervalId);
+          reminderIntervalId = setInterval(() => {
+            const hours = new Date().getHours();
+            const message = (
+              hours < 9 ? 'Frühstück' : hours < 12 ? 'Snack' : hours < 15 ? 'Mittagessen' : hours < 18 ? 'Snack' : 'Abendessen'
+            );
+            new Notification('Essens-Erinnerung', { body: `Zeit für: ${message}. Viel trinken nicht vergessen!` });
+          }, 3 * 60 * 60 * 1000);
+        } catch (e) {
+          console.error(e);
+          alert('Benachrichtigungen konnten nicht aktiviert werden.');
+        }
+      });
+
+      // Ask on first visit (polite) after 5s
+      window.addEventListener('load', () => {
+        if (!('Notification' in window)) return;
+        const asked = localStorage.getItem('askedNotify');
+        if (!asked) {
+          setTimeout(() => {
+            if (Notification.permission === 'default') {
+              // Non-intrusive prompt UI could be added; keep it simple:
+              // Show a soft prompt using confirm
+              if (confirm('Möchtest du Benachrichtigungen für Essens-Erinnerungen aktivieren?')) {
+                document.getElementById('notifyBtn').click();
+              }
+            }
+            localStorage.setItem('askedNotify', 'yes');
+          }, 5000);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
