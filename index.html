@@ -18,6 +18,8 @@
       --scroll-track: #2a2a2a;
       --scroll-thumb: #4a8f54;
       --time-line: #ffb74d;
+      --time-handle: #ffa726;
+      --time-band: rgba(255,183,77,0.12);
       --today-glow: rgba(126,203,126,0.25);
       --header-height: 64px;
       --sticky-gap: 10px;
@@ -75,8 +77,11 @@
     /* Current day highlight */
     .day.today { outline: 2px solid var(--primary); box-shadow: 0 0 0 3px var(--today-glow), 0 2px 10px var(--shadow); }
 
-    /* Time marker (only in current day) */
-    .time-marker { position: absolute; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, transparent, var(--time-line), transparent); box-shadow: 0 0 12px var(--time-line); border-radius: 3px; pointer-events: none; opacity: 0.95; }
+    /* Improved timeline styles */
+    .time-marker { position: absolute; left: 8px; right: 8px; height: 2px; background: var(--time-line); border-radius: 1px; pointer-events: none; opacity: 1; transition: top 0.25s ease; }
+    .time-marker::before { content: ''; position: absolute; left: -8px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: var(--time-handle); border-radius: 50%; box-shadow: 0 0 0 2px rgba(0,0,0,0.2); }
+    .time-marker::after { content: attr(data-time); position: absolute; right: -4px; top: -10px; font-size: 11px; color: var(--muted); background: transparent; padding: 0 4px; }
+    .time-band { position: absolute; left: 0; right: 0; background: var(--time-band); height: 28px; margin-top: -13px; pointer-events: none; transition: top 0.25s ease; }
 
     footer { text-align: center; padding: 20px; background: #1a1a1a; color: var(--muted); font-size: 0.9em; }
 
@@ -301,38 +306,45 @@
           todayEl = day;
         } else {
           day.classList.remove('today');
-          const m = day.querySelector('.time-marker');
-          if (m) m.remove();
+          day.querySelectorAll('.time-marker, .time-band').forEach(n => n.remove());
         }
       });
 
-      if (todayEl) {
-        todayEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
+      if (todayEl) todayEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
+      function fmtTime(d){ return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }); }
 
       function updateMarker() {
         if (!todayEl) return;
         const now = new Date();
         const hours = now.getHours() + now.getMinutes()/60;
-        const startH = 6, endH = 22; // visible time range
+        const startH = 6, endH = 22;
         const t = Math.min(1, Math.max(0, (hours - startH) / (endH - startH)));
 
         let marker = todayEl.querySelector('.time-marker');
+        let band = todayEl.querySelector('.time-band');
         if (!marker) {
           marker = document.createElement('div');
           marker.className = 'time-marker';
           todayEl.appendChild(marker);
         }
+        if (!band) {
+          band = document.createElement('div');
+          band.className = 'time-band';
+          todayEl.appendChild(band);
+        }
         const content = todayEl.querySelector('.day-content');
         const headerH = (todayEl.querySelector('.day-header')?.offsetHeight || 0);
-        const topBase = headerH + 8; // a little spacing below header
-        const usable = (content?.scrollHeight || todayEl.clientHeight) - 24; // bottom margin
+        const topBase = headerH + 12;
+        const usable = (content?.scrollHeight || todayEl.clientHeight) - 24;
         const y = topBase + t * Math.max(0, usable - topBase - 16);
         marker.style.top = y + 'px';
+        band.style.top = y + 'px';
+        marker.setAttribute('data-time', fmtTime(now));
       }
 
       updateMarker();
-      setInterval(updateMarker, 60 * 1000);
+      setInterval(updateMarker, 30 * 1000);
       window.addEventListener('resize', updateMarker);
       document.addEventListener('visibilitychange', () => { if (!document.hidden) updateMarker(); });
     })();
