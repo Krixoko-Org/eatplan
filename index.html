@@ -20,6 +20,7 @@
       --time-line: #ffb74d;
       --today-glow: rgba(126,203,126,0.25);
       --header-height: 64px;
+      --sticky-gap: 10px;
     }
     body.light {
       --bg: #f4f4f4;
@@ -38,10 +39,11 @@
     html, body { height: 100%; }
     body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; transition: background 0.2s ease, color 0.2s ease; }
 
-    header { background: var(--primary); color: #fff; padding: 16px; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 8px var(--shadow); }
+    header { background: var(--primary); color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 8px var(--shadow); }
     header .topbar { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    header h1 { margin: 0; font-size: 1.3rem; }
-    header p { margin: 0; opacity: 0.9; }
+    header h1 { margin: 0; font-size: 1.2rem; }
+    header p { margin: 0; opacity: 0.9; font-size: .95rem; }
+    .now { font-weight: 600; }
 
     .controls { display: flex; gap: 8px; align-items: center; }
     .btn { background: var(--card); color: var(--text); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: transform .15s ease, background .2s, color .2s, border-color .2s; }
@@ -60,10 +62,10 @@
     .day { background: var(--card); border-radius: 12px; box-shadow: 0 2px 10px var(--shadow); scroll-snap-align: start; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; min-height: 70vh; position: relative; }
     .day:hover { transform: translateY(-3px); box-shadow: 0 6px 18px var(--shadow); }
 
-    /* Fix overlap: add top padding to content to account for sticky header height */
-    .day-header { position: sticky; top: calc(var(--header-height) + 8px); background: linear-gradient(180deg, rgba(126,203,126,0.12), rgba(0,0,0,0) 80%), var(--card); padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); border-top-left-radius: 12px; border-top-right-radius: 12px; z-index: 5; }
+    /* Sticky header and proper spacing for first item */
+    .day-header { position: sticky; top: calc(var(--header-height)); background: linear-gradient(180deg, rgba(126,203,126,0.12), rgba(0,0,0,0) 80%), var(--card); padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); border-top-left-radius: 12px; border-top-right-radius: 12px; z-index: 5; }
     .day h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
-    .day-content { padding: calc(14px + 8px) 16px 16px; padding-top: 16px; }
+    .day-content { padding: 16px; padding-top: calc(var(--header-height) + var(--sticky-gap)); }
 
     ul { list-style-type: none; padding: 0; margin: 0; }
     li { margin: 10px 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; position: relative; }
@@ -73,18 +75,19 @@
     /* Current day highlight */
     .day.today { outline: 2px solid var(--primary); box-shadow: 0 0 0 3px var(--today-glow), 0 2px 10px var(--shadow); }
 
-    /* Time marker across a day column */
-    .time-marker { position: absolute; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, transparent, var(--time-line), transparent); box-shadow: 0 0 12px var(--time-line); border-radius: 3px; pointer-events: none; opacity: 0.9; }
+    /* Time marker (only in current day) */
+    .time-marker { position: absolute; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, transparent, var(--time-line), transparent); box-shadow: 0 0 12px var(--time-line); border-radius: 3px; pointer-events: none; opacity: 0.95; }
 
     footer { text-align: center; padding: 20px; background: #1a1a1a; color: var(--muted); font-size: 0.9em; }
 
-    @media (max-width: 600px) { .week-grid { grid-auto-columns: 85%; } .day-header { top: calc(var(--header-height)); } header h1 { font-size: 1.1rem; } }
+    @media (max-width: 600px) { .week-grid { grid-auto-columns: 85%; } .day-header { top: var(--header-height); } header h1 { font-size: 1.05rem; } }
   </style>
 </head>
 <body class="light">
   <header>
     <div class="topbar">
       <div>
+        <div class="now" id="now"></div>
         <h1>7-Tage Ernährungsplan</h1>
         <p>Oxalatarm – Nierenstein-Prophylaxe</p>
       </div>
@@ -275,42 +278,57 @@
       });
     })();
 
-    // Current day highlighting and time marker
+    // Live date/time in header
+    (function() {
+      const el = document.getElementById('now');
+      const fmt = new Intl.DateTimeFormat('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      function upd(){ el.textContent = fmt.format(new Date()); }
+      upd();
+      setInterval(upd, 1000 * 30);
+    })();
+
+    // Current day highlighting and time marker (only current day)
     (function() {
       const weekDays = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
       const todayIndex = new Date().getDay();
       const todayName = weekDays[todayIndex];
 
-      // mark today column
+      let todayEl = null;
       document.querySelectorAll('.day').forEach(day => {
         const h2 = day.querySelector('.day-header h2');
         if (h2 && h2.textContent.trim() === todayName) {
           day.classList.add('today');
-          // ensure visible
-          day.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          todayEl = day;
+        } else {
+          day.classList.remove('today');
+          const m = day.querySelector('.time-marker');
+          if (m) m.remove();
         }
       });
 
-      // Add a moving time marker per day at the approximate meal list position
+      if (todayEl) {
+        todayEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
       function updateMarker() {
-        const hours = new Date().getHours() + new Date().getMinutes()/60;
-        // Map hours 6-22 to vertical space inside each day
-        const startH = 6, endH = 22;
+        if (!todayEl) return;
+        const now = new Date();
+        const hours = now.getHours() + now.getMinutes()/60;
+        const startH = 6, endH = 22; // visible time range
         const t = Math.min(1, Math.max(0, (hours - startH) / (endH - startH)));
 
-        document.querySelectorAll('.day').forEach(day => {
-          let marker = day.querySelector('.time-marker');
-          if (!marker) {
-            marker = document.createElement('div');
-            marker.className = 'time-marker';
-            day.appendChild(marker);
-          }
-          const content = day.querySelector('.day-content');
-          const topPad = day.querySelector('.day-header')?.offsetHeight || 0;
-          const usable = (content?.scrollHeight || day.clientHeight) - 24; // avoid bottom overflow
-          const y = topPad + 8 + t * (usable - topPad - 16);
-          marker.style.top = y + 'px';
-        });
+        let marker = todayEl.querySelector('.time-marker');
+        if (!marker) {
+          marker = document.createElement('div');
+          marker.className = 'time-marker';
+          todayEl.appendChild(marker);
+        }
+        const content = todayEl.querySelector('.day-content');
+        const headerH = (todayEl.querySelector('.day-header')?.offsetHeight || 0);
+        const topBase = headerH + 8; // a little spacing below header
+        const usable = (content?.scrollHeight || todayEl.clientHeight) - 24; // bottom margin
+        const y = topBase + t * Math.max(0, usable - topBase - 16);
+        marker.style.top = y + 'px';
       }
 
       updateMarker();
