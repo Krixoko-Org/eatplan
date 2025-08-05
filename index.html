@@ -5,61 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>7-Tage Ernährungsplan – Nierenstein-Prophylaxe</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #333;
-      line-height: 1.6;
-      margin: 0;
-    }
-    header {
-      background: #4CAF50;
-      color: #fff;
-      padding: 20px 0;
-      text-align: center;
-    }
-    .container {
-      max-width: 100%;
-      margin: auto;
-      padding: 20px;
-      overflow-x: auto;
-    }
-    .days-wrapper {
-      display: flex;
-      gap: 20px;
-      min-width: fit-content;
-      padding-bottom: 10px;
-    }
-    h1, h2 {
-      color: #4CAF50;
-    }
-    .day {
-      background: #fff;
-      padding: 15px;
-      margin: 0;
-      border-left: 5px solid #4CAF50;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      min-width: 300px;
-      flex-shrink: 0;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    li {
-      margin: 5px 0;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #ddd;
-      font-size: 0.9em;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 16px;
-      }
-    }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; color: #333; line-height: 1.6; margin: 0; }
+    header { background: #4CAF50; color: #fff; padding: 20px 0; text-align: center; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .container { max-width: 100%; margin: 0 auto; padding: 16px 0 0; }
+
+    /* Horizontal columns with snap scrolling */
+    .week-grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 1fr); gap: 16px; padding: 12px 16px 20px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding: 16px; -webkit-overflow-scrolling: touch; }
+    .week-grid::-webkit-scrollbar { height: 10px; }
+    .week-grid::-webkit-scrollbar-track { background: #e8e8e8; border-radius: 8px; }
+    .week-grid::-webkit-scrollbar-thumb { background: #9ad0a0; border-radius: 8px; }
+    .week-grid::-webkit-scrollbar-thumb:hover { background: #7fc786; }
+
+    h1, h2 { color: #4CAF50; }
+
+    .day { background: #fff; padding: 0; margin: 0; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); scroll-snap-align: start; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; min-height: 70vh; }
+    .day:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+
+    .day-header { position: sticky; top: 68px; background: linear-gradient(180deg, #eaf7eb, #ffffff 80%); padding: 14px 16px; border-bottom: 1px solid #e6f0e6; border-top-left-radius: 10px; border-top-right-radius: 10px; z-index: 5; }
+    .day h2 { margin: 0; font-size: 1.25rem; }
+    .day-content { padding: 12px 16px 16px; }
+
+    ul { list-style-type: none; padding: 0; margin: 0; }
+    li { margin: 8px 0; background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 10px 12px; }
+    li strong { color: #3b8a3f; }
+    .meal-chip { display: inline-block; font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: #e8f5e9; color: #2e7d32; margin-left: 8px; }
+
+    footer { text-align: center; padding: 20px; background: #ddd; font-size: 0.9em; }
+
+    @media (max-width: 600px) { body { font-size: 16px; } .week-grid { grid-auto-columns: 85%; } .day-header { top: 60px; } }
   </style>
 </head>
 <body>
@@ -69,88 +42,166 @@
   </header>
 
   <div class="container">
-    <div class="days-wrapper">
-    <div class="day">
-      <h2>Montag</h2>
-      <ul>
-        <li><strong>07:00 – Frühstück:</strong> Vollkornbrötchen, Schinken, Ei, Wasser, grüner Tee</li>
-        <li><strong>10:00 – Snack:</strong> Apfel, Mandeln, Wasser</li>
-        <li><strong>13:00 – Mittagessen:</strong> Hähnchenbrust, Reis, Karotten, Wasser</li>
-        <li><strong>16:00 – Snack:</strong> Joghurt, Birne, Wasser</li>
-        <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark, Gurkensalat, Wasser</li>
-      </ul>
-    </div>
+    <div class="week-grid">
+      <div class="day">
+        <div class="day-header"><h2>Montag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>07:00 – Frühstück:</strong> Vollkornbrötchen, Schinken, Ei, Wasser, grüner Tee <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Apfel, Mandeln, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Hähnchenbrust, Reis, Karotten, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Joghurt, Birne, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark, Gurkensalat, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="day">
-      <h2>Dienstag</h2>
-      <ul>
-        <li><strong>07:00 – Frühstück:</strong> Haferflocken, Milch, Banane, Wasser</li>
-        <li><strong>10:00 – Snack:</strong> Butterkekse, Pfirsich, Wasser</li>
-        <li><strong>13:00 – Mittagessen:</strong> Fischfilet, Kartoffeln, Blumenkohl, Wasser</li>
-        <li><strong>16:00 – Snack:</strong> Quark mit Honig, Wasser</li>
-        <li><strong>19:00 – Abendessen:</strong> Vollkornbrot mit Käse und Tomaten, Wasser</li>
-      </ul>
-    </div>
+      <div class="day">
+        <div class="day-header"><h2>Dienstag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>07:00 – Frühstück:</strong> Haferflocken, Milch, Banane, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Butterkekse, Pfirsich, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Fischfilet, Kartoffeln, Blumenkohl, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Quark mit Honig, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Vollkornbrot mit Käse und Tomaten, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="day">
-      <h2>Mittwoch</h2>
-      <ul>
-        <li><strong>07:00 – Frühstück:</strong> Toast mit Frischkäse, Gurke, Tee, Wasser</li>
-        <li><strong>10:00 – Snack:</strong> Joghurt mit Heidelbeeren, Wasser</li>
-        <li><strong>13:00 – Mittagessen:</strong> Putenschnitzel, Nudeln, Zucchini, Wasser</li>
-        <li><strong>16:00 – Snack:</strong> Birne, Studentenfutter, Wasser</li>
-        <li><strong>19:00 – Abendessen:</strong> Eierpfannkuchen mit Apfelmus, Wasser</li>
-      </ul>
-    </div>
+      <div class="day">
+        <div class="day-header"><h2>Mittwoch</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>07:00 – Frühstück:</strong> Toast mit Frischkäse, Gurke, Tee, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Joghurt mit Heidelbeeren, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Putenschnitzel, Nudeln, Zucchini, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Birne, Studentenfutter, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Eierpfannkuchen mit Apfelmus, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="day">
-      <h2>Donnerstag</h2>
-      <ul>
-        <li><strong>07:00 – Frühstück:</strong> Müsli (ohne Nüsse), Milch, Apfel, Wasser</li>
-        <li><strong>10:00 – Snack:</strong> Knäckebrot mit Frischkäse, Wasser</li>
-        <li><strong>13:00 – Mittagessen:</strong> Rindergulasch, Reis, Kohlrabi, Wasser</li>
-        <li><strong>16:00 – Snack:</strong> Obstsalat, Wasser</li>
-        <li><strong>19:00 – Abendessen:</strong> Kartoffelsuppe, Vollkornbrot, Wasser</li>
-      </ul>
-    </div>
+      <div class="day">
+        <div class="day-header"><h2>Donnerstag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>07:00 – Frühstück:</strong> Müsli (ohne Nüsse), Milch, Apfel, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Knäckebrot mit Frischkäse, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Rindergulasch, Reis, Kohlrabi, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Obstsalat, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Kartoffelsuppe, Vollkornbrot, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="day">
-      <h2>Freitag</h2>
-      <ul>
-        <li><strong>07:00 – Frühstück:</strong> Brötchen mit Marmelade und Ei, Wasser</li>
-        <li><strong>10:00 – Snack:</strong> Banane, Naturjoghurt, Wasser</li>
-        <li><strong>13:00 – Mittagessen:</strong> Seelachs, Kartoffelpüree, Brokkoli, Wasser</li>
-        <li><strong>16:00 – Snack:</strong> Reiswaffeln mit Frischkäse, Wasser</li>
-        <li><strong>19:00 – Abendessen:</strong> Gemüseauflauf mit Käse, Wasser</li>
-      </ul>
-    </div>
+      <div class="day">
+        <div class="day-header"><h2>Freitag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>07:00 – Frühstück:</strong> Brötchen mit Marmelade und Ei, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Banane, Naturjoghurt, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Seelachs, Kartoffelpüree, Brokkoli, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Reiswaffeln mit Frischkäse, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Gemüseauflauf mit Käse, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="day">
-      <h2>Samstag</h2>
-      <ul>
-        <li><strong>08:00 – Frühstück:</strong> Rührei, Toast, Tomate, Wasser</li>
-        <li><strong>11:00 – Snack:</strong> Griechischer Joghurt mit Honig, Wasser</li>
-        <li><strong>14:00 – Mittagessen:</strong> Hähnchen-Reispfanne mit Paprika, Wasser</li>
-        <li><strong>16:00 – Snack:</strong> Apfel, Käsewürfel, Wasser</li>
-        <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark und Kräutern, Wasser</li>
-      </ul>
-    </div>
+      <div class="day">
+        <div class="day-header"><h2>Samstag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>08:00 – Frühstück:</strong> Rührei, Toast, Tomate, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>11:00 – Snack:</strong> Griechischer Joghurt mit Honig, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>14:00 – Mittagessen:</strong> Hähnchen-Reispfanne mit Paprika, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Apfel, Käsewürfel, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark und Kräutern, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="day">
-      <h2>Sonntag</h2>
-      <ul>
-        <li><strong>08:00 – Frühstück:</strong> Vollkornbrot mit Schinken und Gurke, Wasser</li>
-        <li><strong>11:00 – Snack:</strong> Birne, Butterkekse, Wasser</li>
-        <li><strong>14:00 – Mittagessen:</strong> Putengeschnetzeltes, Reis, Möhren, Wasser</li>
-        <li><strong>16:00 – Snack:</strong> Joghurt mit Honig, Wasser</li>
-        <li><strong>19:00 – Abendessen:</strong> Kartoffel-Gemüsesuppe mit Brot, Wasser</li>
-      </ul>
-    </div>
-    </div>
-  </div>
+      <div class="day">
+        <div class="day-header"><h2>Sonntag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>08:00 – Frühstück:</strong> Vollkornbrot mit Schinken und Gurke, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>11:00 – Snack:</strong> Birne, Butterkekse, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>
+            <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark, Gurkensalat, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
 
-  <footer>
-    © 2024 Ernährungsplan für Alex Ovcinnikov – Entwickelt zur Unterstützung der Nierensteinprophylaxe
-  </footer>
-</body>
-</html>
+      <div class="day">
+        <div class="day-header"><h2>Dienstag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>07:00 – Frühstück:</strong> Haferflocken, Milch, Banane, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Butterkekse, Pfirsich, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Fischfilet, Kartoffeln, Blumenkohl, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Quark mit Honig, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Vollkornbrot mit Käse und Tomaten, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-header"><h2>Mittwoch</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>07:00 – Frühstück:</strong> Toast mit Frischkäse, Gurke, Tee, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Joghurt mit Heidelbeeren, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Putenschnitzel, Nudeln, Zucchini, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Birne, Studentenfutter, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Eierpfannkuchen mit Apfelmus, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-header"><h2>Donnerstag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>07:00 – Frühstück:</strong> Müsli (ohne Nüsse), Milch, Apfel, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Knäckebrot mit Frischkäse, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Rindergulasch, Reis, Kohlrabi, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Obstsalat, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Kartoffelsuppe, Vollkornbrot, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-header"><h2>Freitag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>07:00 – Frühstück:</strong> Brötchen mit Marmelade und Ei, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>10:00 – Snack:</strong> Banane, Naturjoghurt, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>13:00 – Mittagessen:</strong> Seelachs, Kartoffelpüree, Brokkoli, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Reiswaffeln mit Frischkäse, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Gemüseauflauf mit Käse, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-header"><h2>Samstag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>08:00 – Frühstück:</strong> Rührei, Toast, Tomate, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>11:00 – Snack:</strong> Griechischer Joghurt mit Honig, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>14:00 – Mittagessen:</strong> Hähnchen-Reispfanne mit Paprika, Wasser <span class="meal-chip">Mittag</span></li>
+            <li><strong>16:00 – Snack:</strong> Apfel, Käsewürfel, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark und Kräutern, Wasser <span class="meal-chip">Abend</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-header"><h2>Sonntag</h2></div>
+        <div class="day-content">
+          <ul>
+            <li><strong>08:00 – Frühstück:</strong> Vollkornbrot mit Schinken und Gurke, Wasser <span class="meal-chip">Frühstück</span></li>
+            <li><strong>11:00 – Snack:</strong> Birne, Butterkekse, Wasser <span class="meal-chip">Snack</span></li>
+            <li><strong>
