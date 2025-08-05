@@ -292,7 +292,7 @@
       setInterval(upd, 1000 * 30);
     })();
 
-    // Current day highlighting and time marker (only current day)
+    // Current day highlighting and time marker (only current day) aligned to meal times
     (function() {
       const weekDays = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
       const todayIndex = new Date().getDay();
@@ -313,33 +313,65 @@
       if (todayEl) todayEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 
       function fmtTime(d){ return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }); }
+      function toMinutes(hhmm){ const [h,m] = hhmm.split(':').map(Number); return h*60 + (m||0); }
+
+      function getAnchorsForDay(dayEl){
+        const anchors = [];
+        const items = dayEl.querySelectorAll('li');
+        const re = /^(\d{2}:\d{2})\s*[–-]/; // starts with HH:MM –
+        items.forEach(li => {
+          const strong = li.querySelector('strong');
+          if (!strong) return;
+          const text = strong.textContent.trim();
+          const m = text.match(re);
+          if (!m) return;
+          const timeStr = m[1];
+          const rect = li.getBoundingClientRect();
+          const parentRect = dayEl.getBoundingClientRect();
+          const y = rect.top - parentRect.top + dayEl.scrollTop; // relative to day
+          anchors.push({ minutes: toMinutes(timeStr), y });
+        });
+        return anchors.sort((a,b)=>a.minutes-b.minutes);
+      }
 
       function updateMarker() {
         if (!todayEl) return;
+        // Build anchors each time to account for layout/resize
+        const anchors = getAnchorsForDay(todayEl);
+        if (anchors.length === 0) return;
+
         const now = new Date();
-        const hours = now.getHours() + now.getMinutes()/60;
-        const startH = 6, endH = 22;
-        const t = Math.min(1, Math.max(0, (hours - startH) / (endH - startH)));
+        const nowMin = now.getHours()*60 + now.getMinutes();
+
+        let y;
+        if (nowMin <= anchors[0].minutes) {
+          y = anchors[0].y;
+        } else if (nowMin >= anchors[anchors.length-1].minutes) {
+          y = anchors[anchors.length-1].y;
+        } else {
+          for (let i=0; i<anchors.length-1; i++) {
+            const a = anchors[i], b = anchors[i+1];
+            if (nowMin >= a.minutes && nowMin <= b.minutes) {
+              const t = (nowMin - a.minutes) / Math.max(1, (b.minutes - a.minutes));
+              y = a.y + t * (b.y - a.y);
+              break;
+            }
+          }
+        }
 
         let marker = todayEl.querySelector('.time-marker');
         let band = todayEl.querySelector('.time-band');
-        if (!marker) {
-          marker = document.createElement('div');
-          marker.className = 'time-marker';
-          todayEl.appendChild(marker);
-        }
-        if (!band) {
-          band = document.createElement('div');
-          band.className = 'time-band';
-          todayEl.appendChild(band);
-        }
-        const content = todayEl.querySelector('.day-content');
+        if (!marker) { marker = document.createElement('div'); marker.className = 'time-marker'; todayEl.appendChild(marker); }
+        if (!band) { band = document.createElement('div'); band.className = 'time-band'; todayEl.appendChild(band); }
+
+        // Constrain within day-content area
         const headerH = (todayEl.querySelector('.day-header')?.offsetHeight || 0);
-        const topBase = headerH + 12;
-        const usable = (content?.scrollHeight || todayEl.clientHeight) - 24;
-        const y = topBase + t * Math.max(0, usable - topBase - 16);
-        marker.style.top = y + 'px';
-        band.style.top = y + 'px';
+        const minTop = headerH + 8;
+        const content = todayEl.querySelector('.day-content');
+        const maxTop = (content?.getBoundingClientRect().bottom || todayEl.getBoundingClientRect().bottom) - todayEl.getBoundingClientRect().top - 16;
+        const top = Math.min(maxTop, Math.max(minTop, y));
+        marker.style.top = top + 'px';
+        band.style.top = top + 'px';
         marker.setAttribute('data-time', fmtTime(now));
       }
 
