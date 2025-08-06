@@ -4,89 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>7-Tage Ernährungsplan – Nierenstein-Prophylaxe</title>
-  <style>
-    :root {
-      --bg: #121212;
-      --card: #1e1e1e;
-      --text: #e6e6e6;
-      --muted: #bdbdbd;
-      --primary: #7ecb7e;
-      --primary-strong: #5fbf67;
-      --chip-bg: #1b3320;
-      --chip-text: #b5e2b7;
-      --shadow: rgba(0,0,0,0.4);
-      --scroll-track: #2a2a2a;
-      --scroll-thumb: #4a8f54;
-      --time-line: #ffb74d;
-      --time-handle: #ffa726;
-      --time-band: rgba(255,183,77,0.12);
-      --today-glow: rgba(126,203,126,0.25);
-      --header-height: 64px;
-      --sticky-gap: 10px;
-    }
-    body.light {
-      --bg: #f4f4f4;
-      --card: #ffffff;
-      --text: #333333;
-      --muted: #666666;
-      --primary: #4CAF50;
-      --primary-strong: #3f9c45;
-      --chip-bg: #e8f5e9;
-      --chip-text: #2e7d32;
-      --shadow: rgba(0,0,0,0.12);
-      --scroll-track: #e8e8e8;
-      --scroll-thumb: #9ad0a0;
-    }
-
-    html, body { height: 100%; }
-    body { font-family: Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; margin: 0; transition: background 0.2s ease, color 0.2s ease; }
-
-    header { background: var(--primary); color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 8px var(--shadow); }
-    header .topbar { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    header h1 { margin: 0; font-size: 1.2rem; }
-    header p { margin: 0; opacity: 0.9; font-size: .95rem; }
-    .now { font-weight: 600; }
-
-    .controls { display: flex; gap: 8px; align-items: center; }
-    .btn { background: var(--card); color: var(--text); border: 1px solid var(--primary); padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: transform .15s ease, background .2s, color .2s, border-color .2s; }
-    .btn:hover { transform: translateY(-1px); background: var(--primary-strong); color: #fff; border-color: transparent; }
-
-    .container { max-width: 100%; margin: 0 auto; padding: 12px 0 0; }
-
-    .week-grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 1fr); gap: 16px; padding: 12px 16px 20px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding: 16px; -webkit-overflow-scrolling: touch; }
-    .week-grid::-webkit-scrollbar { height: 10px; }
-    .week-grid::-webkit-scrollbar-track { background: var(--scroll-track); border-radius: 8px; }
-    .week-grid::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 8px; }
-    .week-grid::-webkit-scrollbar-thumb:hover { background: var(--primary-strong); }
-
-    h1, h2 { color: #fff; }
-
-    .day { background: var(--card); border-radius: 12px; box-shadow: 0 2px 10px var(--shadow); scroll-snap-align: start; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; min-height: 70vh; position: relative; }
-    .day:hover { transform: translateY(-3px); box-shadow: 0 6px 18px var(--shadow); }
-
-    /* Sticky header and proper spacing for first item */
-    .day-header { position: sticky; top: calc(var(--header-height)); background: linear-gradient(180deg, rgba(126,203,126,0.12), rgba(0,0,0,0) 80%), var(--card); padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); border-top-left-radius: 12px; border-top-right-radius: 12px; z-index: 5; }
-    .day h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
-    .day-content { padding: 16px; padding-top: calc(var(--header-height) + var(--sticky-gap)); }
-
-    ul { list-style-type: none; padding: 0; margin: 0; }
-    li { margin: 10px 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; position: relative; }
-    li strong { color: var(--primary); }
-    .meal-chip { display: inline-block; font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; background: var(--chip-bg); color: var(--chip-text); margin-left: 8px; }
-
-    /* Current day highlight */
-    .day.today { outline: 2px solid var(--primary); box-shadow: 0 0 0 3px var(--today-glow), 0 2px 10px var(--shadow); }
-
-    /* Improved timeline styles */
-    .time-marker { position: absolute; left: 8px; right: 8px; height: 2px; background: var(--time-line); border-radius: 1px; pointer-events: none; opacity: 1; transition: top 0.25s ease; }
-    .time-marker::before { content: ''; position: absolute; left: -8px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: var(--time-handle); border-radius: 50%; box-shadow: 0 0 0 2px rgba(0,0,0,0.2); }
-    .time-marker::after { content: attr(data-time); position: absolute; right: -4px; top: -10px; font-size: 11px; color: var(--muted); background: transparent; padding: 0 4px; }
-    .time-band { position: absolute; left: 0; right: 0; background: var(--time-band); height: 28px; margin-top: -13px; pointer-events: none; transition: top 0.25s ease; }
-
-    footer { text-align: center; padding: 20px; background: #1a1a1a; color: var(--muted); font-size: 0.9em; }
-
-    @media (max-width: 600px) { .week-grid { grid-auto-columns: 85%; } .day-header { top: var(--header-height); } header h1 { font-size: 1.05rem; } }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="print.css" media="print">
 </head>
 <body class="light">
   <header>
@@ -99,110 +18,14 @@
       <div class="controls">
         <button id="themeToggle" class="btn" aria-pressed="false" aria-label="Darstellung umschalten">🌙 Dark</button>
         <button id="notifyBtn" class="btn" aria-label="Benachrichtigungen aktivieren">🔔 Benachrichtigen</button>
+        <button id="printBtn" class="btn" aria-label="Drucken">🖨️ Drucken</button>
       </div>
     </div>
   </header>
 
   <div class="container">
     <div class="week-grid" id="weekGrid">
-      <!-- Montag -->
-      <div class="day">
-        <div class="day-header"><h2>Montag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>07:00 – Frühstück:</strong> Vollkornbrötchen, fettarmer Käse, Ei, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Apfel, Joghurt natur (calciumreich), Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Hähnchenbrust, Vollkornreis, gedämpfte Karotten, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Hüttenkäse mit Birne, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Pellkartoffeln mit Magerquark und Gurkensalat, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Dienstag -->
-      <div class="day">
-        <div class="day-header"><h2>Dienstag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>07:00 – Frühstück:</strong> Haferflocken mit Milch, Banane, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Butterkekse, Pfirsich, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Gedämpfter Lachs, Kartoffeln, Blumenkohl, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Quark mit Honig, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Vollkornbrot mit Käse und Tomaten, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Mittwoch -->
-      <div class="day">
-        <div class="day-header"><h2>Mittwoch</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>07:00 – Frühstück:</strong> Toast mit Frischkäse, Gurke, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Joghurt mit Heidelbeeren (kleine Portion), Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Putenbrust, Vollkornnudeln, Zucchini, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Birne, Reiswaffeln, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Eieromelette mit Apfelmus-Beilage, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Donnerstag -->
-      <div class="day">
-        <div class="day-header"><h2>Donnerstag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>07:00 – Frühstück:</strong> Müsli ohne Nüsse/Samen, Milch, Apfel, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Knäckebrot mit Frischkäse, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Rindergulasch, Reis, Kohlrabi, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Obstsalat (ohne Nüsse), Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Kartoffelsuppe, Vollkornbrot, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Freitag -->
-      <div class="day">
-        <div class="day-header"><h2>Freitag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>07:00 – Frühstück:</strong> Brötchen mit Marmelade und Ei, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>10:00 – Snack:</strong> Banane, Naturjoghurt, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>13:00 – Mittagessen:</strong> Seelachs, Kartoffelpüree, Brokkoli, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Reiswaffeln mit Frischkäse, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Gemüseauflauf mit Käse, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Samstag -->
-      <div class="day">
-        <div class="day-header"><h2>Samstag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>08:00 – Frühstück:</strong> Rührei, Toast, Tomate, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>11:00 – Snack:</strong> Griechischer Joghurt mit Honig, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>14:00 – Mittagessen:</strong> Hähnchen-Reispfanne mit Paprika, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Apfel, Käsewürfel, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Kartoffeln mit Quark und Kräutern, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Sonntag -->
-      <div class="day">
-        <div class="day-header"><h2>Sonntag</h2></div>
-        <div class="day-content">
-          <ul>
-            <li><strong>08:00 – Frühstück:</strong> Vollkornbrot mit Schinken und Gurke, Wasser <span class="meal-chip">Frühstück</span></li>
-            <li><strong>11:00 – Snack:</strong> Birne, Butterkekse, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>14:00 – Mittagessen:</strong> Putengeschnetzeltes, Reis, Möhren, Wasser <span class="meal-chip">Mittag</span></li>
-            <li><strong>16:00 – Snack:</strong> Joghurt mit Honig, Wasser <span class="meal-chip">Snack</span></li>
-            <li><strong>19:00 – Abendessen:</strong> Kartoffel-Gemüsesuppe mit Brot, Wasser <span class="meal-chip">Abend</span></li>
-          </ul>
-        </div>
-      </div>
-
+      <p>Loading meal plan...</p>
     </div>
   </div>
 
@@ -210,176 +33,16 @@
     © 2024 Ernährungsplan – Unterstützung der Nierensteinprophylaxe (Kalziumoxalat)
   </footer>
 
-  <script>
-    // Theme toggle with localStorage
-    (function() {
-      const body = document.body;
-      const btn = document.getElementById('themeToggle');
-      const saved = localStorage.getItem('theme') || 'light';
-      body.classList.toggle('light', saved === 'light');
-      body.classList.toggle('dark', saved === 'dark');
-      updateBtn();
+  <div id="modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <p id="modal-text"></p>
+      <div class="modal-buttons">
+        <button id="modal-confirm-btn" class="btn">OK</button>
+        <button id="modal-cancel-btn" class="btn btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
 
-      btn.addEventListener('click', () => {
-        const isLight = body.classList.contains('light');
-        body.classList.toggle('light', !isLight);
-        body.classList.toggle('dark', isLight);
-        localStorage.setItem('theme', isLight ? 'dark' : 'light');
-        updateBtn();
-      });
-
-      function updateBtn(){
-        const isLight = body.classList.contains('light');
-        btn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
-        btn.setAttribute('aria-pressed', (!isLight).toString());
-      }
-    })();
-
-    // Browser notifications opt-in and simple reminders
-    (function() {
-      const btn = document.getElementById('notifyBtn');
-      let reminderIntervalId = null;
-
-      btn.addEventListener('click', async () => {
-        try {
-          const permission = await Notification.requestPermission();
-          if (permission !== 'granted') {
-            alert('Benachrichtigungen wurden nicht erlaubt.');
-            return;
-          }
-          new Notification('Benachrichtigungen aktiviert', { body: 'Du erhältst Erinnerungen zu Mahlzeiten.' });
-
-          // Optional: schedule gentle reminders every 3 hours (foreground only)
-          if (reminderIntervalId) clearInterval(reminderIntervalId);
-          reminderIntervalId = setInterval(() => {
-            const hours = new Date().getHours();
-            const message = (
-              hours < 9 ? 'Frühstück' : hours < 12 ? 'Snack' : hours < 15 ? 'Mittagessen' : hours < 18 ? 'Snack' : 'Abendessen'
-            );
-            new Notification('Essens-Erinnerung', { body: `Zeit für: ${message}. Viel trinken nicht vergessen!` });
-          }, 3 * 60 * 60 * 1000);
-        } catch (e) {
-          console.error(e);
-          alert('Benachrichtigungen konnten nicht aktiviert werden.');
-        }
-      });
-
-      // Ask on first visit (polite) after 5s
-      window.addEventListener('load', () => {
-        if (!('Notification' in window)) return;
-        const asked = localStorage.getItem('askedNotify');
-        if (!asked) {
-          setTimeout(() => {
-            if (Notification.permission === 'default') {
-              // Non-intrusive prompt UI could be added; keep it simple:
-              // Show a soft prompt using confirm
-              if (confirm('Möchtest du Benachrichtigungen für Essens-Erinnerungen aktivieren?')) {
-                document.getElementById('notifyBtn').click();
-              }
-            }
-            localStorage.setItem('askedNotify', 'yes');
-          }, 5000);
-        }
-      });
-    })();
-
-    // Live date/time in header
-    (function() {
-      const el = document.getElementById('now');
-      const fmt = new Intl.DateTimeFormat('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-      function upd(){ el.textContent = fmt.format(new Date()); }
-      upd();
-      setInterval(upd, 1000 * 30);
-    })();
-
-    // Current day highlighting and time marker (only current day) aligned to meal times
-    (function() {
-      const weekDays = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
-      const todayIndex = new Date().getDay();
-      const todayName = weekDays[todayIndex];
-
-      let todayEl = null;
-      document.querySelectorAll('.day').forEach(day => {
-        const h2 = day.querySelector('.day-header h2');
-        if (h2 && h2.textContent.trim() === todayName) {
-          day.classList.add('today');
-          todayEl = day;
-        } else {
-          day.classList.remove('today');
-          day.querySelectorAll('.time-marker, .time-band').forEach(n => n.remove());
-        }
-      });
-
-      if (todayEl) todayEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-
-      function fmtTime(d){ return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }); }
-      function toMinutes(hhmm){ const [h,m] = hhmm.split(':').map(Number); return h*60 + (m||0); }
-
-      function getAnchorsForDay(dayEl){
-        const anchors = [];
-        const items = dayEl.querySelectorAll('li');
-        const re = /^(\d{2}:\d{2})\s*[–-]/; // starts with HH:MM –
-        items.forEach(li => {
-          const strong = li.querySelector('strong');
-          if (!strong) return;
-          const text = strong.textContent.trim();
-          const m = text.match(re);
-          if (!m) return;
-          const timeStr = m[1];
-          const rect = li.getBoundingClientRect();
-          const parentRect = dayEl.getBoundingClientRect();
-          const y = rect.top - parentRect.top + dayEl.scrollTop; // relative to day
-          anchors.push({ minutes: toMinutes(timeStr), y });
-        });
-        return anchors.sort((a,b)=>a.minutes-b.minutes);
-      }
-
-      function updateMarker() {
-        if (!todayEl) return;
-        // Build anchors each time to account for layout/resize
-        const anchors = getAnchorsForDay(todayEl);
-        if (anchors.length === 0) return;
-
-        const now = new Date();
-        const nowMin = now.getHours()*60 + now.getMinutes();
-
-        let y;
-        if (nowMin <= anchors[0].minutes) {
-          y = anchors[0].y;
-        } else if (nowMin >= anchors[anchors.length-1].minutes) {
-          y = anchors[anchors.length-1].y;
-        } else {
-          for (let i=0; i<anchors.length-1; i++) {
-            const a = anchors[i], b = anchors[i+1];
-            if (nowMin >= a.minutes && nowMin <= b.minutes) {
-              const t = (nowMin - a.minutes) / Math.max(1, (b.minutes - a.minutes));
-              y = a.y + t * (b.y - a.y);
-              break;
-            }
-          }
-        }
-
-        let marker = todayEl.querySelector('.time-marker');
-        let band = todayEl.querySelector('.time-band');
-        if (!marker) { marker = document.createElement('div'); marker.className = 'time-marker'; todayEl.appendChild(marker); }
-        if (!band) { band = document.createElement('div'); band.className = 'time-band'; todayEl.appendChild(band); }
-
-        // Constrain within day-content area
-        const headerH = (todayEl.querySelector('.day-header')?.offsetHeight || 0);
-        const minTop = headerH + 8;
-        const content = todayEl.querySelector('.day-content');
-        const maxTop = (content?.getBoundingClientRect().bottom || todayEl.getBoundingClientRect().bottom) - todayEl.getBoundingClientRect().top - 16;
-        const top = Math.min(maxTop, Math.max(minTop, y));
-        marker.style.top = top + 'px';
-        band.style.top = top + 'px';
-        marker.setAttribute('data-time', fmtTime(now));
-      }
-
-      updateMarker();
-      setInterval(updateMarker, 30 * 1000);
-      window.addEventListener('resize', updateMarker);
-      document.addEventListener('visibilitychange', () => { if (!document.hidden) updateMarker(); });
-    })();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

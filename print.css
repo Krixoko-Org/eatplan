@@ -1,0 +1,39 @@
+body {
+  font-family: 'Times New Roman', Times, serif;
+  background: #fff;
+  color: #000;
+}
+
+header, .controls, .time-marker, .time-band, footer, #modal {
+  display: none !important;
+}
+
+.week-grid {
+  display: block;
+}
+
+.day {
+  page-break-inside: avoid;
+  box-shadow: none;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.day-header h2 {
+  color: #000;
+}
+
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+li {
+  background: none;
+  border: none;
+  padding: 5px 0;
+}
+
+.meal-chip {
+  display: none;
+}

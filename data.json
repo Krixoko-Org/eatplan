@@ -1,0 +1,74 @@
+{
+  "weekPlan": [
+    {
+      "day": "Montag",
+      "meals": [
+        { "time": "07:00", "type": "Frühstück", "description": "Vollkornbrötchen, fettarmer Käse, Ei, Wasser" },
+        { "time": "10:00", "type": "Snack", "description": "Apfel, Joghurt natur (calciumreich), Wasser" },
+        { "time": "13:00", "type": "Mittag", "description": "Hähnchenbrust, Vollkornreis, gedämpfte Karotten, Wasser" },
+        { "time": "16:00", "type": "Snack", "description": "Hüttenkäse mit Birne, Wasser" },
+        { "time": "19:00", "type": "Abend", "description": "Pellkartoffeln mit Magerquark und Gurkensalat, Wasser" }
+      ]
+    },
+    {
+      "day": "Dienstag",
+      "meals": [
+        { "time": "07:00", "type": "Frühstück", "description": "Haferflocken mit Milch, Banane, Wasser" },
+        { "time": "10:00", "type": "Snack", "description": "Butterkekse, Pfirsich, Wasser" },
+        { "time": "13:00", "type": "Mittag", "description": "Gedämpfter Lachs, Kartoffeln, Blumenkohl, Wasser" },
+        { "time": "16:00", "type": "Snack", "description": "Quark mit Honig, Wasser" },
+        { "time": "19:00", "type": "Abend", "description": "Vollkornbrot mit Käse und Tomaten, Wasser" }
+      ]
+    },
+    {
+      "day": "Mittwoch",
+      "meals": [
+        { "time": "07:00", "type": "Frühstück", "description": "Toast mit Frischkäse, Gurke, Wasser" },
+        { "time": "10:00", "type": "Snack", "description": "Joghurt mit Heidelbeeren (kleine Portion), Wasser" },
+        { "time": "13:00", "type": "Mittag", "description": "Putenbrust, Vollkornnudeln, Zucchini, Wasser" },
+        { "time": "16:00", "type": "Snack", "description": "Birne, Reiswaffeln, Wasser" },
+        { "time": "19:00", "type": "Abend", "description": "Eieromelette mit Apfelmus-Beilage, Wasser" }
+      ]
+    },
+    {
+      "day": "Donnerstag",
+      "meals": [
+        { "time": "07:00", "type": "Frühstück", "description": "Müsli ohne Nüsse/Samen, Milch, Apfel, Wasser" },
+        { "time": "10:00", "type": "Snack", "description": "Knäckebrot mit Frischkäse, Wasser" },
+        { "time": "13:00", "type": "Mittag", "description": "Rindergulasch, Reis, Kohlrabi, Wasser" },
+        { "time": "16:00", "type": "Snack", "description": "Obstsalat (ohne Nüsse), Wasser" },
+        { "time": "19:00", "type": "Abend", "description": "Kartoffelsuppe, Vollkornbrot, Wasser" }
+      ]
+    },
+    {
+      "day": "Freitag",
+      "meals": [
+        { "time": "07:00", "type": "Frühstück", "description": "Brötchen mit Marmelade und Ei, Wasser" },
+        { "time": "10:00", "type": "Snack", "description": "Banane, Naturjoghurt, Wasser" },
+        { "time": "13:00", "type": "Mittag", "description": "Seelachs, Kartoffelpüree, Brokkoli, Wasser" },
+        { "time": "16:00", "type": "Snack", "description": "Reiswaffeln mit Frischkäse, Wasser" },
+        { "time": "19:00", "type": "Abend", "description": "Gemüseauflauf mit Käse, Wasser" }
+      ]
+    },
+    {
+      "day": "Samstag",
+      "meals": [
+        { "time": "08:00", "type": "Frühstück", "description": "Rührei, Toast, Tomate, Wasser" },
+        { "time": "11:00", "type": "Snack", "description": "Griechischer Joghurt mit Honig, Wasser" },
+        { "time": "14:00", "type": "Mittag", "description": "Hähnchen-Reispfanne mit Paprika, Wasser" },
+        { "time": "16:00", "type": "Snack", "description": "Apfel, Käsewürfel, Wasser" },
+        { "time": "19:00", "type": "Abend", "description": "Kartoffeln mit Quark und Kräutern, Wasser" }
+      ]
+    },
+    {
+      "day": "Sonntag",
+      "meals": [
+        { "time": "08:00", "type": "Frühstück", "description": "Vollkornbrot mit Schinken und Gurke, Wasser" },
+        { "time": "11:00", "type": "Snack", "description": "Birne, Butterkekse, Wasser" },
+        { "time": "14:00", "type": "Mittag", "description": "Putengeschnetzeltes, Reis, Möhren, Wasser" },
+        { "time": "16:00", "type": "Snack", "description": "Joghurt mit Honig, Wasser" },
+        { "time": "19:00", "type": "Abend", "description": "Kartoffel-Gemüsesuppe mit Brot, Wasser" }
+      ]
+    }
+  ]
+}
