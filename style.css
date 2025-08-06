@@ -135,3 +135,11 @@ body {
 .btn-secondary:hover {
   background: var(--text);
 }
+
+.day-actions {
+  padding: 16px;
+  padding-top: 0;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}

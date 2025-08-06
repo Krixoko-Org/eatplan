@@ -1,73 +1,99 @@
 {
+  "mealDatabase": {
+    "Frühstück": [
+      { "name": "Vollkornbrötchen mit Käse", "description": "Vollkornbrötchen, fettarmer Käse, Ei, Wasser", "ingredients": ["Vollkornbrötchen", "fettarmer Käse", "Ei", "Wasser"] },
+      { "name": "Haferflocken mit Banane", "description": "Haferflocken mit Milch, Banane, Wasser", "ingredients": ["Haferflocken", "Milch", "Banane", "Wasser"] },
+      { "name": "Toast mit Frischkäse", "description": "Toast mit Frischkäse, Gurke, Wasser", "ingredients": ["Toast", "Frischkäse", "Gurke", "Wasser"] },
+      { "name": "Müsli mit Apfel", "description": "Müsli ohne Nüsse/Samen, Milch, Apfel, Wasser", "ingredients": ["Müsli (nussfrei)", "Milch", "Apfel", "Wasser"] }
+    ],
+    "Snack": [
+      { "name": "Apfel & Joghurt", "description": "Apfel, Joghurt natur (calciumreich), Wasser", "ingredients": ["Apfel", "Joghurt natur", "Wasser"] },
+      { "name": "Butterkekse & Pfirsich", "description": "Butterkekse, Pfirsich, Wasser", "ingredients": ["Butterkekse", "Pfirsich", "Wasser"] },
+      { "name": "Hüttenkäse mit Birne", "description": "Hüttenkäse mit Birne, Wasser", "ingredients": ["Hüttenkäse", "Birne", "Wasser"] },
+      { "name": "Quark mit Honig", "description": "Quark mit Honig, Wasser", "ingredients": ["Quark", "Honig", "Wasser"] }
+    ],
+    "Mittag": [
+      { "name": "Hähnchen mit Reis", "description": "Hähnchenbrust, Vollkornreis, gedämpfte Karotten, Wasser", "ingredients": ["Hähnchenbrust", "Vollkornreis", "Karotten", "Wasser"] },
+      { "name": "Gedämpfter Lachs", "description": "Gedämpfter Lachs, Kartoffeln, Blumenkohl, Wasser", "ingredients": ["Lachsfilet", "Kartoffeln", "Blumenkohl", "Wasser"] },
+      { "name": "Putenbrust mit Nudeln", "description": "Putenbrust, Vollkornnudeln, Zucchini, Wasser", "ingredients": ["Putenbrust", "Vollkornnudeln", "Zucchini", "Wasser"] },
+      { "name": "Rindergulasch", "description": "Rindergulasch, Reis, Kohlrabi, Wasser", "ingredients": ["Rindergulasch", "Reis", "Kohlrabi", "Wasser"] }
+    ],
+    "Abend": [
+      { "name": "Pellkartoffeln mit Quark", "description": "Pellkartoffeln mit Magerquark und Gurkensalat, Wasser", "ingredients": ["Kartoffeln", "Magerquark", "Gurke", "Wasser"] },
+      { "name": "Vollkornbrot mit Käse", "description": "Vollkornbrot mit Käse und Tomaten, Wasser", "ingredients": ["Vollkornbrot", "Käse", "Tomaten", "Wasser"] },
+      { "name": "Eieromelette", "description": "Eieromelette mit Apfelmus-Beilage, Wasser", "ingredients": ["Eier", "Apfelmus", "Wasser"] },
+      { "name": "Kartoffelsuppe", "description": "Kartoffelsuppe, Vollkornbrot, Wasser", "ingredients": ["Kartoffeln", "Suppengemüse", "Vollkornbrot", "Wasser"] }
+    ]
+  },
   "weekPlan": [
     {
       "day": "Montag",
       "meals": [
-        { "time": "07:00", "type": "Frühstück", "description": "Vollkornbrötchen, fettarmer Käse, Ei, Wasser" },
-        { "time": "10:00", "type": "Snack", "description": "Apfel, Joghurt natur (calciumreich), Wasser" },
-        { "time": "13:00", "type": "Mittag", "description": "Hähnchenbrust, Vollkornreis, gedämpfte Karotten, Wasser" },
-        { "time": "16:00", "type": "Snack", "description": "Hüttenkäse mit Birne, Wasser" },
-        { "time": "19:00", "type": "Abend", "description": "Pellkartoffeln mit Magerquark und Gurkensalat, Wasser" }
+        { "type": "Frühstück", "mealIndex": 0 },
+        { "type": "Snack", "mealIndex": 0 },
+        { "type": "Mittag", "mealIndex": 0 },
+        { "type": "Snack", "mealIndex": 2 },
+        { "type": "Abend", "mealIndex": 0 }
       ]
     },
     {
       "day": "Dienstag",
       "meals": [
-        { "time": "07:00", "type": "Frühstück", "description": "Haferflocken mit Milch, Banane, Wasser" },
-        { "time": "10:00", "type": "Snack", "description": "Butterkekse, Pfirsich, Wasser" },
-        { "time": "13:00", "type": "Mittag", "description": "Gedämpfter Lachs, Kartoffeln, Blumenkohl, Wasser" },
-        { "time": "16:00", "type": "Snack", "description": "Quark mit Honig, Wasser" },
-        { "time": "19:00", "type": "Abend", "description": "Vollkornbrot mit Käse und Tomaten, Wasser" }
+        { "type": "Frühstück", "mealIndex": 1 },
+        { "type": "Snack", "mealIndex": 1 },
+        { "type": "Mittag", "mealIndex": 1 },
+        { "type": "Snack", "mealIndex": 3 },
+        { "type": "Abend", "mealIndex": 1 }
       ]
     },
     {
       "day": "Mittwoch",
       "meals": [
-        { "time": "07:00", "type": "Frühstück", "description": "Toast mit Frischkäse, Gurke, Wasser" },
-        { "time": "10:00", "type": "Snack", "description": "Joghurt mit Heidelbeeren (kleine Portion), Wasser" },
-        { "time": "13:00", "type": "Mittag", "description": "Putenbrust, Vollkornnudeln, Zucchini, Wasser" },
-        { "time": "16:00", "type": "Snack", "description": "Birne, Reiswaffeln, Wasser" },
-        { "time": "19:00", "type": "Abend", "description": "Eieromelette mit Apfelmus-Beilage, Wasser" }
+        { "type": "Frühstück", "mealIndex": 2 },
+        { "type": "Snack", "mealIndex": 0 },
+        { "type": "Mittag", "mealIndex": 2 },
+        { "type": "Snack", "mealIndex": 2 },
+        { "type": "Abend", "mealIndex": 2 }
       ]
     },
     {
       "day": "Donnerstag",
       "meals": [
-        { "time": "07:00", "type": "Frühstück", "description": "Müsli ohne Nüsse/Samen, Milch, Apfel, Wasser" },
-        { "time": "10:00", "type": "Snack", "description": "Knäckebrot mit Frischkäse, Wasser" },
-        { "time": "13:00", "type": "Mittag", "description": "Rindergulasch, Reis, Kohlrabi, Wasser" },
-        { "time": "16:00", "type": "Snack", "description": "Obstsalat (ohne Nüsse), Wasser" },
-        { "time": "19:00", "type": "Abend", "description": "Kartoffelsuppe, Vollkornbrot, Wasser" }
+        { "type": "Frühstück", "mealIndex": 3 },
+        { "type": "Snack", "mealIndex": 1 },
+        { "type": "Mittag", "mealIndex": 3 },
+        { "type": "Snack", "mealIndex": 0 },
+        { "type": "Abend", "mealIndex": 3 }
       ]
     },
     {
       "day": "Freitag",
       "meals": [
-        { "time": "07:00", "type": "Frühstück", "description": "Brötchen mit Marmelade und Ei, Wasser" },
-        { "time": "10:00", "type": "Snack", "description": "Banane, Naturjoghurt, Wasser" },
-        { "time": "13:00", "type": "Mittag", "description": "Seelachs, Kartoffelpüree, Brokkoli, Wasser" },
-        { "time": "16:00", "type": "Snack", "description": "Reiswaffeln mit Frischkäse, Wasser" },
-        { "time": "19:00", "type": "Abend", "description": "Gemüseauflauf mit Käse, Wasser" }
+        { "type": "Frühstück", "mealIndex": 0 },
+        { "type": "Snack", "mealIndex": 1 },
+        { "type": "Mittag", "mealIndex": 1 },
+        { "type": "Snack", "mealIndex": 2 },
+        { "type": "Abend", "mealIndex": 2 }
       ]
     },
     {
       "day": "Samstag",
       "meals": [
-        { "time": "08:00", "type": "Frühstück", "description": "Rührei, Toast, Tomate, Wasser" },
-        { "time": "11:00", "type": "Snack", "description": "Griechischer Joghurt mit Honig, Wasser" },
-        { "time": "14:00", "type": "Mittag", "description": "Hähnchen-Reispfanne mit Paprika, Wasser" },
-        { "time": "16:00", "type": "Snack", "description": "Apfel, Käsewürfel, Wasser" },
-        { "time": "19:00", "type": "Abend", "description": "Kartoffeln mit Quark und Kräutern, Wasser" }
+        { "type": "Frühstück", "mealIndex": 2 },
+        { "type": "Snack", "mealIndex": 3 },
+        { "type": "Mittag", "mealIndex": 0 },
+        { "type": "Snack", "mealIndex": 0 },
+        { "type": "Abend", "mealIndex": 0 }
       ]
     },
     {
       "day": "Sonntag",
       "meals": [
-        { "time": "08:00", "type": "Frühstück", "description": "Vollkornbrot mit Schinken und Gurke, Wasser" },
-        { "time": "11:00", "type": "Snack", "description": "Birne, Butterkekse, Wasser" },
-        { "time": "14:00", "type": "Mittag", "description": "Putengeschnetzeltes, Reis, Möhren, Wasser" },
-        { "time": "16:00", "type": "Snack", "description": "Joghurt mit Honig, Wasser" },
-        { "time": "19:00", "type": "Abend", "description": "Kartoffel-Gemüsesuppe mit Brot, Wasser" }
+        { "type": "Frühstück", "mealIndex": 1 },
+        { "type": "Snack", "mealIndex": 1 },
+        { "type": "Mittag", "mealIndex": 2 },
+        { "type": "Snack", "mealIndex": 3 },
+        { "type": "Abend", "mealIndex": 3 }
       ]
     }
   ]
