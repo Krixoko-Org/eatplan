@@ -332,26 +332,35 @@ function changeMealsForDay(dayIndex) {
 
 function createShoppingListForDay(dayIndex) {
   const dayPlan = mealData.weekPlan[dayIndex];
-  const ingredients = new Set();
+  const personCount = document.getElementById('person-count').value || 1;
+  const categorizedIngredients = {};
 
   dayPlan.meals.forEach(mealRef => {
     const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
     meal.ingredients.forEach(ingredient => {
-      ingredients.add(`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`);
+      if (!categorizedIngredients[ingredient.category]) {
+        categorizedIngredients[ingredient.category] = [];
+      }
+      const scaledQuantity = ingredient.quantity * personCount;
+      categorizedIngredients[ingredient.category].push(`${scaledQuantity} ${ingredient.unit} ${ingredient.name}`);
     });
   });
 
-  let shoppingListHtml = `<h3>Einkaufsliste für ${mealData.weekPlan[dayIndex].day}</h3><ul>`;
-  ingredients.forEach(ingredient => {
-    shoppingListHtml += `<li>${ingredient}</li>`;
-  });
-  shoppingListHtml += '</ul>';
+  let shoppingListHtml = `<h3>Einkaufsliste für ${mealData.weekPlan[dayIndex].day}</h3>`;
+  for (const category in categorizedIngredients) {
+    shoppingListHtml += `<h4>${category}</h4><ul>`;
+    categorizedIngredients[category].forEach(ingredient => {
+      shoppingListHtml += `<li>${ingredient}</li>`;
+    });
+    shoppingListHtml += '</ul>';
+  }
 
   showModal(shoppingListHtml);
 }
 
 function createWeeklyShoppingList() {
   const weeklyIngredients = {};
+  const personCount = document.getElementById('person-count').value || 1;
 
   mealData.weekPlan.forEach(dayPlan => {
     dayPlan.meals.forEach(mealRef => {
@@ -367,11 +376,23 @@ function createWeeklyShoppingList() {
     });
   });
 
-  let shoppingListHtml = '<h3>Wocheneinkaufsliste</h3><ul>';
+  const categorizedIngredients = {};
   Object.values(weeklyIngredients).forEach(ingredient => {
-    shoppingListHtml += `<li>${ingredient.quantity} ${ingredient.unit} ${ingredient.name}</li>`;
+    if (!categorizedIngredients[ingredient.category]) {
+      categorizedIngredients[ingredient.category] = [];
+    }
+    const scaledQuantity = ingredient.quantity * personCount;
+    categorizedIngredients[ingredient.category].push(`${scaledQuantity} ${ingredient.unit} ${ingredient.name}`);
   });
-  shoppingListHtml += '</ul>';
+
+  let shoppingListHtml = '<h3>Wocheneinkaufsliste</h3>';
+  for (const category in categorizedIngredients) {
+    shoppingListHtml += `<h4>${category}</h4><ul>`;
+    categorizedIngredients[category].forEach(ingredient => {
+      shoppingListHtml += `<li>${ingredient}</li>`;
+    });
+    shoppingListHtml += '</ul>';
+  }
 
   showModal(shoppingListHtml);
 }
