@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog – Nierenstein-Prophylaxe</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="print.css" media="print">
+</head>
+<body class="light">
+  <header>
+    <div class="topbar">
+      <div>
+        <div class="now" id="now"></div>
+        <h1>7-Tage Ernährungsplan</h1>
+        <p>Oxalatarm – Nierenstein-Prophylaxe</p>
+      </div>
+      <div class="controls">
+        <div class="person-selector">
+          <label for="person-count">Personen:</label>
+          <input type="number" id="person-count" value="1" min="1" max="10">
+        </div>
+        <button id="themeToggle" class="btn" aria-pressed="false" aria-label="Darstellung umschalten">🌙 Dark</button>
+        <button id="notifyBtn" class="btn" aria-label="Benachrichtigungen aktivieren">🔔 Benachrichtigen</button>
+        <button id="printBtn" class="btn" aria-label="Drucken">🖨️ Drucken</button>
+        <a href="index.html" class="btn">Home</a>
+        <button id="weeklyShoppingListBtn" class="btn" aria-label="Wocheneinkaufsliste">📝 Wocheneinkaufsliste</button>
+      </div>
+      <button id="menu-toggle" class="menu-toggle-btn" aria-label="Menü umschalten">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    <article class="blog-content">
+      <header class="blog-header">
+        <h1>Nierensteine und Ernährung: Ein umfassender Leitfaden</h1>
+        <p class="author-info">Verfasst am 6. August 2025</p>
+      </header>
+
+      <section>
+        <h2>Was sind Nierensteine?</h2>
+        <p>Nierensteine sind feste, kristalline Ablagerungen, die sich in den Nieren bilden können. Sie entstehen, wenn bestimmte Substanzen im Urin in zu hoher Konzentration vorliegen und auskristallisieren. Die Größe der Steine kann von einem Sandkorn bis zu einem Golfball variieren. Während kleine Steine oft unbemerkt mit dem Urin ausgeschieden werden, können größere Steine den Harnfluss blockieren und starke Schmerzen (Nierenkoliken) verursachen.</p>
+        <p>Die gute Nachricht ist, dass die richtige Ernährung eine entscheidende Rolle bei der Vorbeugung (Prophylaxe) von Nierensteinen spielen kann. Je nach Art des Nierensteins sind unterschiedliche diätetische Maßnahmen erforderlich.</p>
+      </section>
+
+      <section>
+        <h2>Die häufigsten Arten von Nierensteinen und ihre Ernährungsanpassungen</h2>
+
+        <h3>1. Kalziumoxalatsteine (ca. 80% der Fälle)</h3>
+        <p>Dies ist die bei weitem häufigste Art von Nierensteinen. Sie entstehen, wenn sich Kalzium im Urin mit Oxalat verbindet, einer Substanz, die in vielen Lebensmitteln vorkommt.</p>
+        <h4>Ernährungsempfehlungen:</h4>
+        <ul>
+          <li><strong>Oxalatarme Ernährung:</strong> Reduzieren Sie den Verzehr von oxalatreichen Lebensmitteln. Dazu gehören: Spinat, Rhabarber, Mangold, Rote Bete, Nüsse (insbesondere Mandeln), dunkle Schokolade und schwarzer Tee. Unser 7-Tage-Ernährungsplan ist speziell auf eine oxalatarme Ernährung ausgelegt.</li>
+          <li><strong>Ausreichende Kalziumzufuhr:</strong> Entgegen früherer Annahmen ist eine normale Kalziumzufuhr (ca. 1000-1200 mg pro Tag) wichtig. Kalzium bindet Oxalat bereits im Darm, sodass weniger davon über die Nieren ausgeschieden wird. Gute Kalziumquellen sind Milchprodukte, Brokkoli und kalziumreiches Mineralwasser.</li>
+          <li><strong>Reduzierter Salzkonsum:</strong> Hoher Salzkonsum führt zu einer erhöhten Kalziumausscheidung im Urin, was das Steinrisiko erhöht. Vermeiden Sie stark verarbeitete Lebensmittel und salzen Sie sparsam.</li>
+          <li><strong>Tierisches Eiweiß in Maßen:</strong> Eine hohe Zufuhr von tierischem Eiweiß (Fleisch, Fisch, Geflügel) kann das Risiko ebenfalls erhöhen.</li>
+        </ul>
+
+        <h3>2. Harnsäuresteine (ca. 5-10% der Fälle)</h3>
+        <p>Diese Steine bilden sich, wenn der Urin dauerhaft zu sauer ist (niedriger pH-Wert). Ein hoher Konsum von purinreichen Lebensmitteln ist ein Hauptrisikofaktor.</p>
+        <h4>Ernährungsempfehlungen:</h4>
+        <ul>
+          <li><strong>Purinarme Ernährung:</strong> Reduzieren Sie den Verzehr von purinreichen Lebensmitteln wie Innereien (Leber, Niere), rotem Fleisch, einigen Fischarten (Sardellen, Hering) und Hülsenfrüchten.</li>
+          <li><strong>Alkalisierende Ernährung:</strong> Erhöhen Sie den Verzehr von Obst und Gemüse. Diese Lebensmittel machen den Urin basischer (alkalischer), was die Löslichkeit von Harnsäure erhöht und der Steinbildung entgegenwirkt.</li>
+          <li><strong>Flüssigkeitszufuhr:</strong> Eine hohe Flüssigkeitszufuhr ist auch hier entscheidend, um die Harnsäurekonzentration zu verdünnen.</li>
+        </ul>
+
+        <h3>3. Struvitsteine (Infektsteine, ca. 5-10% der Fälle)</h3>
+        <p>Struvitsteine entstehen meist als Folge von wiederkehrenden Harnwegsinfektionen. Bakterien können den Urin basisch machen, was die Bildung dieser Steine begünstigt.</p>
+        <h4>Ernährungsempfehlungen:</h4>
+        <p>Die primäre Behandlung ist die medikamentöse Therapie der Harnwegsinfektion. Die Ernährung spielt hier eine unterstützende Rolle.</p>
+        <ul>
+          <li><strong>Ansäuern des Urins:</strong> Bestimmte Lebensmittel wie Preiselbeeren (Cranberries) können helfen, den Urin leicht anzusäuern und das Bakterienwachstum zu hemmen. Dies sollte jedoch nur in Absprache mit einem Arzt erfolgen.</li>
+          <li><strong>Allgemeine gesunde Ernährung:</strong> Eine ausgewogene Ernährung zur Stärkung des Immunsystems ist von Vorteil.</li>
+        </ul>
+
+        <h3>4. Cystinsteine (selten, ca. 1% der Fälle)</h3>
+        <p>Diese seltene Steinart wird durch eine genetische Störung verursacht, bei der zu viel der Aminosäure Cystin über die Nieren ausgeschieden wird.</p>
+        <h4>Ernährungsempfehlungen:</h4>
+        <ul>
+          <li><strong>Sehr hohe Flüssigkeitszufuhr:</strong> Betroffene müssen oft mehr als 4 Liter pro Tag trinken, auch nachts, um das Cystin gelöst zu halten.</li>
+          <li><strong>Alkalisierung des Urins:</strong> Ähnlich wie bei Harnsäuresteinen hilft eine gemüse- und obstreiche Ernährung, den Urin-pH-Wert zu erhöhen.</li>
+          <li><strong>Reduzierung von Methionin:</strong> Da Cystin aus der Aminosäure Methionin gebildet wird, kann eine Reduzierung von methioninreichen Lebensmitteln (z.B. Fleisch, Fisch, Eier) hilfreich sein. Dies erfordert eine sorgfältige Ernährungsplanung.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Die wichtigste Regel für alle Steinarten: Trinken, Trinken, Trinken!</h2>
+        <p>Unabhängig von der Steinart ist eine ausreichende Flüssigkeitszufuhr die absolut wichtigste Maßnahme zur Vorbeugung. Ziel ist es, täglich mindestens 2 bis 3 Liter Urin zu produzieren. Am besten eignen sich Wasser, ungesüßte Kräutertees und verdünnte Fruchtsäfte. Eine gute Verteilung der Trinkmenge über den ganzen Tag ist entscheidend.</p>
+      </section>
+    </article>
+  </div>
+
+  <footer>
+    © 2024 Ernährungsplan – Unterstützung der Nierensteinprophylaxe (Kalziumoxalat)
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
