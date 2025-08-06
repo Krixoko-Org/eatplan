@@ -200,6 +200,52 @@ function initializePage() {
     // This part of the original script is very complex and depends on the old data structure.
     // I will simplify it for now, as the timeline marker is a secondary feature.
     // A proper implementation would require a more robust way of handling meal times.
+
+    function updateTimeline() {
+        if (!todayEl) return;
+
+        const now = new Date();
+        const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+        const dayPlan = mealData.weekPlan[todayEl.dataset.dayIndex];
+        if (!dayPlan) return;
+
+        const mealTimes = dayPlan.meals.map(mealRef => {
+            const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
+            // This is a simplification. The original HTML had times like "07:00 - Frühstück".
+            // The current data structure doesn't have explicit times, so I'll use approximations.
+            // A better data structure would include the time for each meal in weekPlan.
+            switch(mealRef.type) {
+                case 'Frühstück': return 7 * 60;
+                case 'Snack': return (nowMinutes < 12 * 60) ? 10 * 60 : 16 * 60;
+                case 'Mittag': return 13 * 60;
+                case 'Abend': return 19 * 60;
+                default: return 0;
+            }
+        }).sort((a,b) => a - b);
+
+        const dayContent = todayEl.querySelector('.day-content');
+        const contentHeight = dayContent.scrollHeight;
+
+        // Approximate the position based on time of day
+        const startOfDay = 7 * 60; // 7am
+        const endOfDay = 21 * 60; // 9pm
+        const percentOfDay = (nowMinutes - startOfDay) / (endOfDay - startOfDay);
+        const yPos = contentHeight * percentOfDay;
+
+        let marker = todayEl.querySelector('.time-marker');
+        if (!marker) {
+            marker = document.createElement('div');
+            marker.className = 'time-marker';
+            dayContent.appendChild(marker);
+        }
+        marker.style.top = `${yPos}px`;
+        marker.setAttribute('data-time', now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }));
+    }
+
+    updateTimeline();
+    setInterval(updateTimeline, 60000);
+    window.addEventListener('resize', updateTimeline);
   })();
 
   // Print button
@@ -232,6 +278,15 @@ function initializePage() {
         const dayIndex = parseInt(dayEl.dataset.dayIndex, 10);
         createShoppingListForDay(dayIndex);
       }
+    });
+  })();
+
+  // Weekly Shopping List button
+  (function() {
+    const btn = document.getElementById('weeklyShoppingListBtn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      createWeeklyShoppingList();
     });
   })();
 }
@@ -272,13 +327,39 @@ function createShoppingListForDay(dayIndex) {
   dayPlan.meals.forEach(mealRef => {
     const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
     meal.ingredients.forEach(ingredient => {
-      ingredients.add(ingredient);
+      ingredients.add(`${ingredient.quantity} ${ingredient.unit} ${ingredient.name}`);
     });
   });
 
-  let shoppingListHtml = '<h3>Einkaufsliste</h3><ul>';
+  let shoppingListHtml = `<h3>Einkaufsliste für ${mealData.weekPlan[dayIndex].day}</h3><ul>`;
   ingredients.forEach(ingredient => {
     shoppingListHtml += `<li>${ingredient}</li>`;
+  });
+  shoppingListHtml += '</ul>';
+
+  showModal(shoppingListHtml);
+}
+
+function createWeeklyShoppingList() {
+  const weeklyIngredients = {};
+
+  mealData.weekPlan.forEach(dayPlan => {
+    dayPlan.meals.forEach(mealRef => {
+      const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
+      meal.ingredients.forEach(ingredient => {
+        const key = `${ingredient.name}-${ingredient.unit}`;
+        if (weeklyIngredients[key]) {
+          weeklyIngredients[key].quantity += ingredient.quantity;
+        } else {
+          weeklyIngredients[key] = { ...ingredient };
+        }
+      });
+    });
+  });
+
+  let shoppingListHtml = '<h3>Wocheneinkaufsliste</h3><ul>';
+  Object.values(weeklyIngredients).forEach(ingredient => {
+    shoppingListHtml += `<li>${ingredient.quantity} ${ingredient.unit} ${ingredient.name}</li>`;
   });
   shoppingListHtml += '</ul>';
 
