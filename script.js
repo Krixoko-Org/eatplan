@@ -289,6 +289,16 @@ function initializePage() {
       createWeeklyShoppingList();
     });
   })();
+
+  // Hamburger menu
+  (function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const topbar = document.querySelector('.topbar');
+    if (!menuToggle || !topbar) return;
+    menuToggle.addEventListener('click', () => {
+      topbar.classList.toggle('menu-open');
+    });
+  })();
 }
 
 function changeMealsForDay(dayIndex) {
