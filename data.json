@@ -1,28 +1,87 @@
 {
   "mealDatabase": {
     "Frühstück": [
-      { "name": "Vollkornbrötchen mit Käse", "description": "Vollkornbrötchen, fettarmer Käse, Ei, Wasser", "ingredients": ["Vollkornbrötchen", "fettarmer Käse", "Ei", "Wasser"] },
-      { "name": "Haferflocken mit Banane", "description": "Haferflocken mit Milch, Banane, Wasser", "ingredients": ["Haferflocken", "Milch", "Banane", "Wasser"] },
-      { "name": "Toast mit Frischkäse", "description": "Toast mit Frischkäse, Gurke, Wasser", "ingredients": ["Toast", "Frischkäse", "Gurke", "Wasser"] },
-      { "name": "Müsli mit Apfel", "description": "Müsli ohne Nüsse/Samen, Milch, Apfel, Wasser", "ingredients": ["Müsli (nussfrei)", "Milch", "Apfel", "Wasser"] }
+      { "name": "Vollkornbrötchen mit Käse", "description": "Vollkornbrötchen, fettarmer Käse, Ei, Wasser", "ingredients": [
+        { "name": "Vollkornbrötchen", "quantity": 2, "unit": "Stück" },
+        { "name": "fettarmer Käse", "quantity": 50, "unit": "g" },
+        { "name": "Ei", "quantity": 1, "unit": "Stück" }
+      ]},
+      { "name": "Haferflocken mit Banane", "description": "Haferflocken mit Milch, Banane, Wasser", "ingredients": [
+        { "name": "Haferflocken", "quantity": 50, "unit": "g" },
+        { "name": "Milch", "quantity": 200, "unit": "ml" },
+        { "name": "Banane", "quantity": 1, "unit": "Stück" }
+      ]},
+      { "name": "Toast mit Frischkäse", "description": "Toast mit Frischkäse, Gurke, Wasser", "ingredients": [
+        { "name": "Toast", "quantity": 2, "unit": "Scheiben" },
+        { "name": "Frischkäse", "quantity": 50, "unit": "g" },
+        { "name": "Gurke", "quantity": 0.25, "unit": "Stück" }
+      ]},
+      { "name": "Müsli mit Apfel", "description": "Müsli ohne Nüsse/Samen, Milch, Apfel, Wasser", "ingredients": [
+        { "name": "Müsli (nussfrei)", "quantity": 60, "unit": "g" },
+        { "name": "Milch", "quantity": 200, "unit": "ml" },
+        { "name": "Apfel", "quantity": 1, "unit": "Stück" }
+      ]}
     ],
     "Snack": [
-      { "name": "Apfel & Joghurt", "description": "Apfel, Joghurt natur (calciumreich), Wasser", "ingredients": ["Apfel", "Joghurt natur", "Wasser"] },
-      { "name": "Butterkekse & Pfirsich", "description": "Butterkekse, Pfirsich, Wasser", "ingredients": ["Butterkekse", "Pfirsich", "Wasser"] },
-      { "name": "Hüttenkäse mit Birne", "description": "Hüttenkäse mit Birne, Wasser", "ingredients": ["Hüttenkäse", "Birne", "Wasser"] },
-      { "name": "Quark mit Honig", "description": "Quark mit Honig, Wasser", "ingredients": ["Quark", "Honig", "Wasser"] }
+      { "name": "Apfel & Joghurt", "description": "Apfel, Joghurt natur (calciumreich), Wasser", "ingredients": [
+        { "name": "Apfel", "quantity": 1, "unit": "Stück" },
+        { "name": "Joghurt natur", "quantity": 150, "unit": "g" }
+      ]},
+      { "name": "Butterkekse & Pfirsich", "description": "Butterkekse, Pfirsich, Wasser", "ingredients": [
+        { "name": "Butterkekse", "quantity": 5, "unit": "Stück" },
+        { "name": "Pfirsich", "quantity": 1, "unit": "Stück" }
+      ]},
+      { "name": "Hüttenkäse mit Birne", "description": "Hüttenkäse mit Birne, Wasser", "ingredients": [
+        { "name": "Hüttenkäse", "quantity": 100, "unit": "g" },
+        { "name": "Birne", "quantity": 1, "unit": "Stück" }
+      ]},
+      { "name": "Quark mit Honig", "description": "Quark mit Honig, Wasser", "ingredients": [
+        { "name": "Quark", "quantity": 150, "unit": "g" },
+        { "name": "Honig", "quantity": 1, "unit": "EL" }
+      ]}
     ],
     "Mittag": [
-      { "name": "Hähnchen mit Reis", "description": "Hähnchenbrust, Vollkornreis, gedämpfte Karotten, Wasser", "ingredients": ["Hähnchenbrust", "Vollkornreis", "Karotten", "Wasser"] },
-      { "name": "Gedämpfter Lachs", "description": "Gedämpfter Lachs, Kartoffeln, Blumenkohl, Wasser", "ingredients": ["Lachsfilet", "Kartoffeln", "Blumenkohl", "Wasser"] },
-      { "name": "Putenbrust mit Nudeln", "description": "Putenbrust, Vollkornnudeln, Zucchini, Wasser", "ingredients": ["Putenbrust", "Vollkornnudeln", "Zucchini", "Wasser"] },
-      { "name": "Rindergulasch", "description": "Rindergulasch, Reis, Kohlrabi, Wasser", "ingredients": ["Rindergulasch", "Reis", "Kohlrabi", "Wasser"] }
+      { "name": "Hähnchen mit Reis", "description": "Hähnchenbrust, Vollkornreis, gedämpfte Karotten, Wasser", "ingredients": [
+        { "name": "Hähnchenbrust", "quantity": 150, "unit": "g" },
+        { "name": "Vollkornreis", "quantity": 75, "unit": "g" },
+        { "name": "Karotten", "quantity": 100, "unit": "g" }
+      ]},
+      { "name": "Gedämpfter Lachs", "description": "Gedämpfter Lachs, Kartoffeln, Blumenkohl, Wasser", "ingredients": [
+        { "name": "Lachsfilet", "quantity": 150, "unit": "g" },
+        { "name": "Kartoffeln", "quantity": 200, "unit": "g" },
+        { "name": "Blumenkohl", "quantity": 150, "unit": "g" }
+      ]},
+      { "name": "Putenbrust mit Nudeln", "description": "Putenbrust, Vollkornnudeln, Zucchini, Wasser", "ingredients": [
+        { "name": "Putenbrust", "quantity": 150, "unit": "g" },
+        { "name": "Vollkornnudeln", "quantity": 75, "unit": "g" },
+        { "name": "Zucchini", "quantity": 1, "unit": "Stück" }
+      ]},
+      { "name": "Rindergulasch", "description": "Rindergulasch, Reis, Kohlrabi, Wasser", "ingredients": [
+        { "name": "Rindergulasch", "quantity": 200, "unit": "g" },
+        { "name": "Reis", "quantity": 75, "unit": "g" },
+        { "name": "Kohlrabi", "quantity": 150, "unit": "g" }
+      ]}
     ],
     "Abend": [
-      { "name": "Pellkartoffeln mit Quark", "description": "Pellkartoffeln mit Magerquark und Gurkensalat, Wasser", "ingredients": ["Kartoffeln", "Magerquark", "Gurke", "Wasser"] },
-      { "name": "Vollkornbrot mit Käse", "description": "Vollkornbrot mit Käse und Tomaten, Wasser", "ingredients": ["Vollkornbrot", "Käse", "Tomaten", "Wasser"] },
-      { "name": "Eieromelette", "description": "Eieromelette mit Apfelmus-Beilage, Wasser", "ingredients": ["Eier", "Apfelmus", "Wasser"] },
-      { "name": "Kartoffelsuppe", "description": "Kartoffelsuppe, Vollkornbrot, Wasser", "ingredients": ["Kartoffeln", "Suppengemüse", "Vollkornbrot", "Wasser"] }
+      { "name": "Pellkartoffeln mit Quark", "description": "Pellkartoffeln mit Magerquark und Gurkensalat, Wasser", "ingredients": [
+        { "name": "Kartoffeln", "quantity": 250, "unit": "g" },
+        { "name": "Magerquark", "quantity": 150, "unit": "g" },
+        { "name": "Gurke", "quantity": 0.25, "unit": "Stück" }
+      ]},
+      { "name": "Vollkornbrot mit Käse", "description": "Vollkornbrot mit Käse und Tomaten, Wasser", "ingredients": [
+        { "name": "Vollkornbrot", "quantity": 2, "unit": "Scheiben" },
+        { "name": "Käse", "quantity": 50, "unit": "g" },
+        { "name": "Tomaten", "quantity": 1, "unit": "Stück" }
+      ]},
+      { "name": "Eieromelette", "description": "Eieromelette mit Apfelmus-Beilage, Wasser", "ingredients": [
+        { "name": "Eier", "quantity": 2, "unit": "Stück" },
+        { "name": "Apfelmus", "quantity": 50, "unit": "g" }
+      ]},
+      { "name": "Kartoffelsuppe", "description": "Kartoffelsuppe, Vollkornbrot, Wasser", "ingredients": [
+        { "name": "Kartoffeln", "quantity": 300, "unit": "g" },
+        { "name": "Suppengemüse", "quantity": 100, "unit": "g" },
+        { "name": "Vollkornbrot", "quantity": 1, "unit": "Scheibe" }
+      ]}
     ]
   },
   "weekPlan": [
