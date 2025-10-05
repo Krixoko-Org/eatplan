@@ -1,0 +1,5 @@
+# Log files
+*.log
+
+# Temporary verification files
+jules-scratch/
