@@ -24,6 +24,8 @@
         <button id="notifyBtn" class="btn" aria-label="Benachrichtigungen aktivieren">🔔 Benachrichtigen</button>
         <button id="printBtn" class="btn" aria-label="Drucken">🖨️ Drucken</button>
         <a href="blog.html" class="btn">Blog</a>
+        <a href="lexikon.html" class="btn">Lexikon</a>
+        <a href="rechner.html" class="btn">Rechner</a>
         <button id="weeklyShoppingListBtn" class="btn" aria-label="Wocheneinkaufsliste">📝 Wocheneinkaufsliste</button>
       </div>
       <button id="menu-toggle" class="menu-toggle-btn" aria-label="Menü umschalten">
@@ -35,6 +37,20 @@
   </header>
 
   <div class="container">
+    <div class="feature-box" id="hydrationTracker">
+      <h3>Trink-Tracker</h3>
+      <p>Protokolliere deine tägliche Wasseraufnahme (Ziel: 2.5L)</p>
+      <div class="hydration-progress">
+        <div class="hydration-progress-bar" id="hydrationProgressBar"></div>
+      </div>
+      <p class="hydration-status" id="hydrationStatus">0 / 2500 ml</p>
+      <div class="hydration-controls">
+        <button class="btn" data-amount="250">+ 250 ml Glas</button>
+        <button class="btn" data-amount="500">+ 500 ml Flasche</button>
+        <button class="btn btn-secondary" id="resetHydrationBtn">Zurücksetzen</button>
+      </div>
+    </div>
+
     <div class="week-grid" id="weekGrid">
       <p>Loading meal plan...</p>
     </div>

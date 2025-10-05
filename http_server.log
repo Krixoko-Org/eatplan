@@ -1,0 +1,11 @@
+127.0.0.1 - - [05/Oct/2025 18:27:07] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2025 18:27:07] "GET /script.js HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2025 18:27:07] "GET /style.css HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2025 18:27:07] "GET /print.css HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2025 18:27:07] "GET /data.json HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2025 18:27:09] "GET /blog.html HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2025 18:27:09] "GET /style.css HTTP/1.1" 304 -
+127.0.0.1 - - [05/Oct/2025 18:27:09] "GET /script.js HTTP/1.1" 304 -
+127.0.0.1 - - [05/Oct/2025 18:27:09] "GET /data.json HTTP/1.1" 304 -
+127.0.0.1 - - [05/Oct/2025 18:27:09] "GET /lexikon.html HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2025 18:27:09] "GET /rechner.html HTTP/1.1" 200 -
