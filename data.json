@@ -155,5 +155,56 @@
         { "type": "Abend", "mealIndex": 3 }
       ]
     }
+  ],
+  "lexikon": [
+    {
+      "term": "Oxalat",
+      "definition": "Oxalat (oder Oxalsäure) ist eine chemische Verbindung, die in vielen pflanzlichen Lebensmitteln natürlich vorkommt. In hohen Konzentrationen kann es sich im Urin mit Kalzium verbinden und Kalziumoxalatsteine bilden, die häufigste Art von Nierensteinen. Eine oxalatarme Ernährung wird daher oft zur Prophylaxe empfohlen."
+    },
+    {
+      "term": "Purin",
+      "definition": "Purine sind organische Verbindungen, die sowohl vom Körper hergestellt als auch über die Nahrung aufgenommen werden. Beim Abbau von Purinen entsteht Harnsäure. Ein hoher Konsum purinreicher Lebensmittel (z.B. rotes Fleisch, Innereien) kann zu einem Anstieg der Harnsäure im Urin führen und die Bildung von Harnsäuresteinen begünstigen."
+    },
+    {
+      "term": "Kalzium",
+      "definition": "Kalzium ist ein lebenswichtiger Mineralstoff für Knochen und Zähne. Entgegen früherer Meinungen ist eine ausreichende Kalziumzufuhr (ca. 1000-1200 mg/Tag) bei Kalziumoxalatsteinen wichtig. Kalzium bindet Oxalat bereits im Darm, wodurch weniger Oxalat über die Nieren ausgeschieden wird und das Steinrisiko sinkt."
+    },
+    {
+      "term": "Citrat",
+      "definition": "Citrat ist das Salz der Zitronensäure und ein natürlicher Hemmstoff der Nierensteinbildung. Es erhöht den pH-Wert des Urins und bindet Kalzium, was der Bildung von Kalziumoxalat- und Harnsäuresteinen entgegenwirkt. Zitrusfrüchte wie Zitronen und Orangen sind reich an Citrat."
+    }
+  ],
+  "oxalateFoods": [
+    { "name": "Apfel", "value": 4 },
+    { "name": "Banane", "value": 3 },
+    { "name": "Weintrauben", "value": 1 },
+    { "name": "Erdbeeren", "value": 15 },
+    { "name": "Himbeeren", "value": 48 },
+    { "name": "Blumenkohl", "value": 10 },
+    { "name": "Brokkoli", "value": 5 },
+    { "name": "Gurke", "value": 2 },
+    { "name": "Karotte", "value": 20 },
+    { "name": "Kartoffel", "value": 25 },
+    { "name": "Spinat", "value": 970 },
+    { "name": "Rhabarber", "value": 850 },
+    { "name": "Mangold", "value": 650 },
+    { "name": "Rote Bete", "value": 150 },
+    { "name": "Tomate", "value": 5 },
+    { "name": "Weißer Reis (gekocht)", "value": 4 },
+    { "name": "Vollkornreis (gekocht)", "value": 10 },
+    { "name": "Haferflocken", "value": 130 },
+    { "name": "Weizenbrot", "value": 40 },
+    { "name": "Vollkornbrot", "value": 70 },
+    { "name": "Mandeln", "value": 490 },
+    { "name": "Walnüsse", "value": 70 },
+    { "name": "Hähnchenbrust", "value": 0 },
+    { "name": "Lachs", "value": 0 },
+    { "name": "Rindfleisch", "value": 0 },
+    { "name": "Ei", "value": 0 },
+    { "name": "Milch", "value": 1 },
+    { "name": "Joghurt", "value": 1 },
+    { "name": "Käse (Gouda)", "value": 1 },
+    { "name": "Dunkle Schokolade", "value": 120 },
+    { "name": "Schwarzer Tee (gebrüht)", "value": 35 }
   ]
 }
