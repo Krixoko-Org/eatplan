@@ -53,15 +53,69 @@ document.addEventListener('DOMContentLoaded', () => {
         populateFoodSelector();
         initializeOxalateCalculator();
       }
+      if (document.getElementById('blog-index-container')) {
+        renderBlogIndex();
+      }
+      if (document.getElementById('blog-post-content')) {
+        renderBlogPost();
+      }
     })
     .catch(error => {
       console.error('Error fetching or parsing data:', error);
-      const container = document.getElementById('weekGrid') || document.getElementById('lexikonContainer') || document.getElementById('oxalateCalculator');
+      const container = document.getElementById('weekGrid') || document.getElementById('lexikonContainer') || document.getElementById('oxalateCalculator') || document.getElementById('blog-index-container') || document.getElementById('blog-post-content');
       if (container) {
           container.innerHTML = '<p style="color: red; text-align: center;">Could not load data. Please try again later.</p>';
       }
     });
 });
+
+function renderBlogIndex() {
+  const container = document.getElementById('blog-index-container');
+  if (!container || !mealData.blogPosts) return;
+  container.innerHTML = '';
+  // Sort posts by ID descending to show newest first
+  const sortedPosts = [...mealData.blogPosts].sort((a, b) => b.id - a.id);
+  sortedPosts.forEach(post => {
+    const article = document.createElement('article');
+    article.className = 'blog-summary';
+    article.innerHTML = `
+      <h2><a href="blog-post.html?id=${post.id}">${post.title}</a></h2>
+      <p class="summary-meta">Verfasst am ${post.date}</p>
+      <p>${post.summary}</p>
+      <a href="blog-post.html?id=${post.id}" class="btn btn-secondary">Weiterlesen &rarr;</a>
+    `;
+    container.appendChild(article);
+  });
+}
+
+function renderBlogPost() {
+  const container = document.getElementById('blog-post-content');
+  if (!container || !mealData.blogPosts) return;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const postId = parseInt(urlParams.get('id'), 10);
+
+  if (!postId) {
+    container.innerHTML = '<p>Blog-Beitrag nicht gefunden.</p>';
+    return;
+  }
+
+  const post = mealData.blogPosts.find(p => p.id === postId);
+
+  if (post) {
+    document.title = `${post.title} – Blog – Nierenstein-Prophylaxe`;
+    container.innerHTML = `
+      <div class="blog-header">
+        <h1>${post.title}</h1>
+        <p class="author-info">Verfasst am ${post.date}</p>
+      </div>
+      ${post.content}
+    `;
+  } else {
+    container.innerHTML = '<p>Der angeforderte Blog-Beitrag konnte nicht gefunden werden.</p>';
+    document.title = 'Beitrag nicht gefunden – Blog – Nierenstein-Prophylaxe';
+  }
+}
 
 function renderLexikon() {
   const lexikonContainer = document.getElementById('lexikonContainer');
