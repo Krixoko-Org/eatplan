@@ -5,7 +5,6 @@ let mealData = {};
 (function() {
   const body = document.body;
   const btn = document.getElementById('themeToggle');
-  if (!btn) return;
   const saved = localStorage.getItem('theme') || 'light';
   body.classList.toggle('light', saved === 'light');
   body.classList.toggle('dark', saved === 'dark');
@@ -37,61 +36,32 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(data => {
       mealData = data;
-
-      // Always initialize general components
+      renderWeekPlan();
       initializePage();
-
-      // Page-specific initializations
-      if (document.getElementById('weekGrid')) {
-        renderWeekPlan();
-        initializeIndexPage();
-      }
-      if (document.getElementById('lexikonContainer')) {
-        renderLexikon();
-      }
-      if (document.getElementById('oxalateCalculator')) {
-        populateFoodSelector();
-        initializeOxalateCalculator();
-      }
     })
     .catch(error => {
       console.error('Error fetching or parsing data:', error);
-      const container = document.getElementById('weekGrid') || document.getElementById('lexikonContainer') || document.getElementById('oxalateCalculator');
-      if (container) {
-          container.innerHTML = '<p style="color: red; text-align: center;">Could not load data. Please try again later.</p>';
-      }
+      const weekGrid = document.getElementById('weekGrid');
+      weekGrid.innerHTML = '<p style="color: red; text-align: center;">Could not load meal plan. Please try again later.</p>';
     });
 });
 
-function renderLexikon() {
-  const lexikonContainer = document.getElementById('lexikonContainer');
-  if (!lexikonContainer || !mealData.lexikon) return;
-  lexikonContainer.innerHTML = '';
-  mealData.lexikon.sort((a, b) => a.term.localeCompare(b.term)).forEach(entry => {
-    const entryEl = document.createElement('div');
-    entryEl.className = 'lexikon-entry';
-    const termEl = document.createElement('h3');
-    termEl.textContent = entry.term;
-    const definitionEl = document.createElement('p');
-    definitionEl.textContent = entry.definition;
-    entryEl.appendChild(termEl);
-    entryEl.appendChild(definitionEl);
-    lexikonContainer.appendChild(entryEl);
-  });
-}
-
 function renderWeekPlan() {
   const weekGrid = document.getElementById('weekGrid');
-  weekGrid.innerHTML = '';
+  weekGrid.innerHTML = ''; // Clear existing content
+
   mealData.weekPlan.forEach((dayData, dayIndex) => {
     const dayEl = document.createElement('div');
     dayEl.className = 'day';
     dayEl.dataset.dayIndex = dayIndex;
+
     const dayHeader = document.createElement('div');
     dayHeader.className = 'day-header';
     dayHeader.innerHTML = `<h2>${dayData.day}</h2>`;
+
     const dayContent = document.createElement('div');
     dayContent.className = 'day-content';
+
     const mealList = document.createElement('ul');
     dayData.meals.forEach(mealRef => {
       const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
@@ -99,10 +69,16 @@ function renderWeekPlan() {
       mealItem.innerHTML = `<strong>${mealRef.type}:</strong> ${meal.description} <span class="meal-chip">${mealRef.type}</span>`;
       mealList.appendChild(mealItem);
     });
+
     dayContent.appendChild(mealList);
+
     const dayActions = document.createElement('div');
     dayActions.className = 'day-actions';
-    dayActions.innerHTML = `<button class="btn btn-secondary change-meals-btn">Ändere Mahlzeiten</button><button class="btn create-shopping-list-btn">Erstelle Einkaufsliste</button>`;
+    dayActions.innerHTML = `
+      <button class="btn btn-secondary change-meals-btn">Ändere Mahlzeiten</button>
+      <button class="btn create-shopping-list-btn">Erstelle Einkaufsliste</button>
+    `;
+
     dayEl.appendChild(dayHeader);
     dayEl.appendChild(dayContent);
     dayEl.appendChild(dayActions);
@@ -110,58 +86,47 @@ function renderWeekPlan() {
   });
 }
 
+
 function showModal(text, onConfirm, onCancel) {
   const modal = document.getElementById('modal');
-  if (!modal) return;
   const modalText = document.getElementById('modal-text');
   const confirmBtn = document.getElementById('modal-confirm-btn');
   const cancelBtn = document.getElementById('modal-cancel-btn');
-  modalText.innerHTML = text;
+
+  modalText.innerHTML = text; // Use innerHTML to allow for list formatting
+
   const newConfirmBtn = confirmBtn.cloneNode(true);
   confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
   const newCancelBtn = cancelBtn.cloneNode(true);
   cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
   newConfirmBtn.addEventListener('click', () => {
     modal.style.display = 'none';
     if (onConfirm) onConfirm();
   });
+
   newCancelBtn.addEventListener('click', () => {
     modal.style.display = 'none';
     if (onCancel) onCancel();
   });
+
   if (onCancel) {
     newCancelBtn.style.display = 'inline-block';
   } else {
     newCancelBtn.style.display = 'none';
   }
+
   modal.style.display = 'flex';
 }
 
 function initializePage() {
-  (function() { // Hamburger menu
-    const menuToggle = document.getElementById('menu-toggle');
-    const topbar = document.querySelector('.topbar');
-    if (!menuToggle || !topbar) return;
-    menuToggle.addEventListener('click', () => {
-      topbar.classList.toggle('menu-open');
-    });
-  })();
-  (function() { // Live date/time in header
-    const el = document.getElementById('now');
-    if (!el) return;
-    const fmt = new Intl.DateTimeFormat('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-    function upd(){ el.textContent = fmt.format(new Date()); }
-    upd();
-    setInterval(upd, 1000 * 30);
-  })();
-}
-
-function initializeIndexPage() {
-  initializeHydrationTracker();
-  (function() { // Browser notifications
+  // Browser notifications opt-in and simple reminders
+  (function() {
     const btn = document.getElementById('notifyBtn');
     if (!btn) return;
     let reminderIntervalId = null;
+
     btn.addEventListener('click', async () => {
       try {
         const permission = await Notification.requestPermission();
@@ -170,10 +135,13 @@ function initializeIndexPage() {
           return;
         }
         new Notification('Benachrichtigungen aktiviert', { body: 'Du erhältst Erinnerungen zu Mahlzeiten.' });
+
         if (reminderIntervalId) clearInterval(reminderIntervalId);
         reminderIntervalId = setInterval(() => {
           const hours = new Date().getHours();
-          const message = (hours < 9 ? 'Frühstück' : hours < 12 ? 'Snack' : hours < 15 ? 'Mittagessen' : hours < 18 ? 'Snack' : 'Abendessen');
+          const message = (
+            hours < 9 ? 'Frühstück' : hours < 12 ? 'Snack' : hours < 15 ? 'Mittagessen' : hours < 18 ? 'Snack' : 'Abendessen'
+          );
           new Notification('Essens-Erinnerung', { body: `Zeit für: ${message}. Viel trinken nicht vergessen!` });
         }, 3 * 60 * 60 * 1000);
       } catch (e) {
@@ -181,21 +149,39 @@ function initializeIndexPage() {
         showModal('Benachrichtigungen konnten nicht aktiviert werden.');
       }
     });
+
     if (!('Notification' in window)) return;
     const asked = localStorage.getItem('askedNotify');
     if (!asked) {
       setTimeout(() => {
         if (Notification.permission === 'default') {
-          showModal('Möchtest du Benachrichtigungen für Essens-Erinnerungen aktivieren?', () => document.getElementById('notifyBtn').click(), () => {});
+          showModal(
+            'Möchtest du Benachrichtigungen für Essens-Erinnerungen aktivieren?',
+            () => document.getElementById('notifyBtn').click(),
+            () => {}
+          );
         }
         localStorage.setItem('askedNotify', 'yes');
       }, 5000);
     }
   })();
-  (function() { // Current day highlighting and time marker
+
+  // Live date/time in header
+  (function() {
+    const el = document.getElementById('now');
+    if (!el) return;
+    const fmt = new Intl.DateTimeFormat('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    function upd(){ el.textContent = fmt.format(new Date()); }
+    upd();
+    setInterval(upd, 1000 * 30);
+  })();
+
+  // Current day highlighting and time marker
+  (function() {
     const weekDays = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
     const todayIndex = new Date().getDay();
     const todayName = weekDays[todayIndex];
+
     let todayEl = null;
     document.querySelectorAll('.day').forEach(day => {
       const h2 = day.querySelector('.day-header h2');
@@ -206,42 +192,74 @@ function initializeIndexPage() {
         day.classList.remove('today');
       }
     });
+
     if (todayEl) {
       todayEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
+
+    // This part of the original script is very complex and depends on the old data structure.
+    // I will simplify it for now, as the timeline marker is a secondary feature.
+    // A proper implementation would require a more robust way of handling meal times.
+
     function updateTimeline() {
-      if (!todayEl) return;
-      const now = new Date();
-      const nowMinutes = now.getHours() * 60 + now.getMinutes();
-      const dayPlan = mealData.weekPlan[todayEl.dataset.dayIndex];
-      if (!dayPlan) return;
-      const dayContent = todayEl.querySelector('.day-content');
-      const contentHeight = dayContent.scrollHeight;
-      const startOfDay = 7 * 60;
-      const endOfDay = 21 * 60;
-      const percentOfDay = (nowMinutes - startOfDay) / (endOfDay - startOfDay);
-      const yPos = contentHeight * percentOfDay;
-      let marker = todayEl.querySelector('.time-marker');
-      if (!marker) {
-        marker = document.createElement('div');
-        marker.className = 'time-marker';
-        dayContent.appendChild(marker);
-      }
-      marker.style.top = `${yPos}px`;
-      marker.setAttribute('data-time', now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }));
+        if (!todayEl) return;
+
+        const now = new Date();
+        const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+        const dayPlan = mealData.weekPlan[todayEl.dataset.dayIndex];
+        if (!dayPlan) return;
+
+        const mealTimes = dayPlan.meals.map(mealRef => {
+            const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
+            // This is a simplification. The original HTML had times like "07:00 - Frühstück".
+            // The current data structure doesn't have explicit times, so I'll use approximations.
+            // A better data structure would include the time for each meal in weekPlan.
+            switch(mealRef.type) {
+                case 'Frühstück': return 7 * 60;
+                case 'Snack': return (nowMinutes < 12 * 60) ? 10 * 60 : 16 * 60;
+                case 'Mittag': return 13 * 60;
+                case 'Abend': return 19 * 60;
+                default: return 0;
+            }
+        }).sort((a,b) => a - b);
+
+        const dayContent = todayEl.querySelector('.day-content');
+        const contentHeight = dayContent.scrollHeight;
+
+        // Approximate the position based on time of day
+        const startOfDay = 7 * 60; // 7am
+        const endOfDay = 21 * 60; // 9pm
+        const percentOfDay = (nowMinutes - startOfDay) / (endOfDay - startOfDay);
+        const yPos = contentHeight * percentOfDay;
+
+        let marker = todayEl.querySelector('.time-marker');
+        if (!marker) {
+            marker = document.createElement('div');
+            marker.className = 'time-marker';
+            dayContent.appendChild(marker);
+        }
+        marker.style.top = `${yPos}px`;
+        marker.setAttribute('data-time', now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }));
     }
+
     updateTimeline();
     setInterval(updateTimeline, 60000);
     window.addEventListener('resize', updateTimeline);
   })();
-  (function() { // Print button
+
+  // Print button
+  (function() {
     const btn = document.getElementById('printBtn');
     if (!btn) return;
-    btn.addEventListener('click', () => window.print());
+    btn.addEventListener('click', () => {
+      window.print();
+    });
   })();
-  (function() { // Change Meals button
+
+  // Change Meals button
+  (function() {
     const weekGrid = document.getElementById('weekGrid');
-    if (!weekGrid) return;
     weekGrid.addEventListener('click', (e) => {
       if (e.target.classList.contains('change-meals-btn')) {
         const dayEl = e.target.closest('.day');
@@ -251,9 +269,9 @@ function initializeIndexPage() {
     });
   })();
 
-  (function() { // Create Shopping List button
+  // Create Shopping List button
+  (function() {
     const weekGrid = document.getElementById('weekGrid');
-    if (!weekGrid) return;
     weekGrid.addEventListener('click', (e) => {
       if (e.target.classList.contains('create-shopping-list-btn')) {
         const dayEl = e.target.closest('.day');
@@ -262,68 +280,25 @@ function initializeIndexPage() {
       }
     });
   })();
-  (function() { // Weekly Shopping List button
+
+  // Weekly Shopping List button
+  (function() {
     const btn = document.getElementById('weeklyShoppingListBtn');
     if (!btn) return;
-    btn.addEventListener('click', () => createWeeklyShoppingList());
-  })();
-}
-
-function initializeHydrationTracker() {
-  const tracker = document.getElementById('hydrationTracker');
-  if (!tracker) return;
-  const progressBar = document.getElementById('hydrationProgressBar');
-  const status = document.getElementById('hydrationStatus');
-  const controls = tracker.querySelector('.hydration-controls');
-  const resetBtn = document.getElementById('resetHydrationBtn');
-  const GOAL = 2500;
-  const STORAGE_KEY = 'hydrationData';
-  let currentAmount = 0;
-  function loadData() {
-    const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    const today = new Date().toISOString().slice(0, 10);
-    if (savedData && savedData.date === today) {
-      currentAmount = savedData.amount;
-    } else {
-      currentAmount = 0;
-      saveData();
-    }
-  }
-  function saveData() {
-    const today = new Date().toISOString().slice(0, 10);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ amount: currentAmount, date: today }));
-  }
-  function updateUI() {
-    const percentage = Math.min((currentAmount / GOAL) * 100, 100);
-    progressBar.style.width = `${percentage}%`;
-    status.textContent = `${currentAmount} / ${GOAL} ml`;
-    if (currentAmount >= GOAL) {
-      progressBar.style.backgroundColor = 'var(--primary-strong)';
-    } else {
-      progressBar.style.backgroundColor = 'var(--primary)';
-    }
-  }
-  function addAmount(amount) {
-    currentAmount += amount;
-    updateUI();
-    saveData();
-  }
-  function resetAmount() {
-    currentAmount = 0;
-    updateUI();
-    saveData();
-  }
-  const addButtons = controls.querySelectorAll('button[data-amount]');
-  addButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const amount = parseInt(button.dataset.amount, 10);
-      addAmount(amount);
+    btn.addEventListener('click', () => {
+      createWeeklyShoppingList();
     });
-  });
+  })();
 
-  resetBtn.addEventListener('click', resetAmount);
-  loadData();
-  updateUI();
+  // Hamburger menu
+  (function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const topbar = document.querySelector('.topbar');
+    if (!menuToggle || !topbar) return;
+    menuToggle.addEventListener('click', () => {
+      topbar.classList.toggle('menu-open');
+    });
+  })();
 }
 
 function changeMealsForDay(dayIndex) {
@@ -332,12 +307,16 @@ function changeMealsForDay(dayIndex) {
     const mealType = mealRef.type;
     const currentMealIndex = mealRef.mealIndex;
     const mealOptionsCount = mealData.mealDatabase[mealType].length;
+
     let newMealIndex;
     do {
       newMealIndex = Math.floor(Math.random() * mealOptionsCount);
     } while (newMealIndex === currentMealIndex && mealOptionsCount > 1);
+
     mealRef.mealIndex = newMealIndex;
   });
+
+  // Re-render the specific day that was changed
   const dayEl = document.querySelector(`.day[data-day-index='${dayIndex}']`);
   if (dayEl) {
     const mealList = dayEl.querySelector('ul');
@@ -355,6 +334,7 @@ function createShoppingListForDay(dayIndex) {
   const dayPlan = mealData.weekPlan[dayIndex];
   const personCount = document.getElementById('person-count').value || 1;
   const categorizedIngredients = {};
+
   dayPlan.meals.forEach(mealRef => {
     const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
     meal.ingredients.forEach(ingredient => {
@@ -365,6 +345,7 @@ function createShoppingListForDay(dayIndex) {
       categorizedIngredients[ingredient.category].push(`${scaledQuantity} ${ingredient.unit} ${ingredient.name}`);
     });
   });
+
   let shoppingListHtml = `<h3>Einkaufsliste für ${mealData.weekPlan[dayIndex].day}</h3>`;
   for (const category in categorizedIngredients) {
     shoppingListHtml += `<h4>${category}</h4><ul>`;
@@ -373,74 +354,14 @@ function createShoppingListForDay(dayIndex) {
     });
     shoppingListHtml += '</ul>';
   }
+
   showModal(shoppingListHtml);
-}
-
-function populateFoodSelector() {
-    const selector = document.getElementById('foodSelector');
-    if (!selector || !mealData.oxalateFoods) return;
-    const sortedFoods = [...mealData.oxalateFoods].sort((a, b) => a.name.localeCompare(b.name));
-    selector.innerHTML = '<option value="">Lebensmittel auswählen...</option>'; // Clear previous options
-    sortedFoods.forEach(food => {
-        const option = document.createElement('option');
-        option.value = food.name;
-        option.textContent = `${food.name} (${food.value} mg/100g)`;
-        selector.appendChild(option);
-    });
-}
-
-function initializeOxalateCalculator() {
-    const calculator = document.getElementById('oxalateCalculator');
-    if (!calculator) return;
-    const foodSelector = document.getElementById('foodSelector');
-    const quantityInput = document.getElementById('foodQuantity');
-    const addBtn = document.getElementById('addFoodBtn');
-    const mealList = document.getElementById('mealList');
-    const totalOxalateEl = document.getElementById('totalOxalate');
-    const resetBtn = document.getElementById('resetCalcBtn');
-    let currentMeal = [];
-    function renderMeal() {
-        mealList.innerHTML = '';
-        let totalOxalate = 0;
-        currentMeal.forEach((item, index) => {
-            const oxalateForItem = (item.quantity / 100) * item.food.value;
-            totalOxalate += oxalateForItem;
-            const li = document.createElement('li');
-            li.innerHTML = `<span>${item.food.name} (${item.quantity}g) - <strong>${oxalateForItem.toFixed(1)} mg</strong></span><button class="remove-item-btn" data-index="${index}">&times;</button>`;
-            mealList.appendChild(li);
-        });
-        totalOxalateEl.textContent = `${totalOxalate.toFixed(1)} mg`;
-    }
-    addBtn.addEventListener('click', () => {
-        const selectedFoodName = foodSelector.value;
-        const quantity = parseInt(quantityInput.value, 10);
-        if (!selectedFoodName || !quantity || quantity <= 0) {
-            showModal('Bitte wählen Sie ein Lebensmittel aus und geben Sie eine gültige Menge ein.');
-            return;
-        }
-        const food = mealData.oxalateFoods.find(f => f.name === selectedFoodName);
-        if (!food) return;
-        currentMeal.push({ food, quantity });
-        renderMeal();
-        quantityInput.value = '';
-        foodSelector.value = '';
-    });
-    mealList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('remove-item-btn')) {
-            const index = parseInt(e.target.dataset.index, 10);
-            currentMeal.splice(index, 1);
-            renderMeal();
-        }
-    });
-    resetBtn.addEventListener('click', () => {
-        currentMeal = [];
-        renderMeal();
-    });
 }
 
 function createWeeklyShoppingList() {
   const weeklyIngredients = {};
   const personCount = document.getElementById('person-count').value || 1;
+
   mealData.weekPlan.forEach(dayPlan => {
     dayPlan.meals.forEach(mealRef => {
       const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
@@ -454,6 +375,7 @@ function createWeeklyShoppingList() {
       });
     });
   });
+
   const categorizedIngredients = {};
   Object.values(weeklyIngredients).forEach(ingredient => {
     if (!categorizedIngredients[ingredient.category]) {
@@ -462,6 +384,7 @@ function createWeeklyShoppingList() {
     const scaledQuantity = ingredient.quantity * personCount;
     categorizedIngredients[ingredient.category].push(`${scaledQuantity} ${ingredient.unit} ${ingredient.name}`);
   });
+
   let shoppingListHtml = '<h3>Wocheneinkaufsliste</h3>';
   for (const category in categorizedIngredients) {
     shoppingListHtml += `<h4>${category}</h4><ul>`;
@@ -470,5 +393,6 @@ function createWeeklyShoppingList() {
     });
     shoppingListHtml += '</ul>';
   }
+
   showModal(shoppingListHtml);
 }
