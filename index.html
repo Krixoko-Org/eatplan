@@ -10,24 +10,26 @@
 <body class="light">
   <header>
     <div class="topbar">
-      <div>
+      <div class="logo-area">
+        <div>
+          <h1>Ernährungsplan</h1>
+          <p>Nierenstein-Prophylaxe</p>
+        </div>
         <div class="now" id="now"></div>
-        <h1>7-Tage Ernährungsplan</h1>
-        <p>Oxalatarm – Nierenstein-Prophylaxe</p>
       </div>
-      <div class="controls">
+      <nav class="controls">
+        <a href="blog.html" class="btn">Blog</a>
+        <a href="lexikon.html" class="btn">Lexikon</a>
+        <a href="rechner.html" class="btn">Rechner</a>
         <div class="person-selector">
           <label for="person-count">Personen:</label>
           <input type="number" id="person-count" value="1" min="1" max="10">
         </div>
-        <button id="themeToggle" class="btn" aria-pressed="false" aria-label="Darstellung umschalten">🌙 Dark</button>
-        <button id="notifyBtn" class="btn" aria-label="Benachrichtigungen aktivieren">🔔 Benachrichtigen</button>
-        <button id="printBtn" class="btn" aria-label="Drucken">🖨️ Drucken</button>
-        <a href="blog.html" class="btn">Blog</a>
-        <a href="lexikon.html" class="btn">Lexikon</a>
-        <a href="rechner.html" class="btn">Rechner</a>
-        <button id="weeklyShoppingListBtn" class="btn" aria-label="Wocheneinkaufsliste">📝 Wocheneinkaufsliste</button>
-      </div>
+        <button id="weeklyShoppingListBtn" class="btn" aria-label="Wocheneinkaufsliste">📝 Einkaufsliste</button>
+        <button id="printBtn" class="btn" aria-label="Drucken">🖨️</button>
+        <button id="themeToggle" class="btn" aria-pressed="false" aria-label="Darstellung umschalten">🌙</button>
+        <button id="notifyBtn" class="btn" aria-label="Benachrichtigungen aktivieren">🔔</button>
+      </nav>
       <button id="menu-toggle" class="menu-toggle-btn" aria-label="Menü umschalten">
         <span></span>
         <span></span>
