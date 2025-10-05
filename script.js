@@ -21,7 +21,7 @@ let mealData = {};
 
   function updateBtn(){
     const isLight = body.classList.contains('light');
-    btn.textContent = isLight ? '🌙 Dark' : '☀️ Light';
+    btn.textContent = isLight ? '🌙' : '☀️';
     btn.setAttribute('aria-pressed', (!isLight).toString());
   }
 })();
