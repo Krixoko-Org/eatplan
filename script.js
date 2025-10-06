@@ -212,6 +212,7 @@ function initializePage() {
 
 function initializeIndexPage() {
   initializeHydrationTracker();
+  initializeShoppingListModal();
   (function() { // Browser notifications
     const btn = document.getElementById('notifyBtn');
     if (!btn) return;
@@ -405,29 +406,118 @@ function changeMealsForDay(dayIndex) {
   }
 }
 
+function openShoppingListModal(title, content) {
+  const modal = document.getElementById('shoppingListModal');
+  if (!modal) return;
+  document.getElementById('shoppingListTitle').textContent = title;
+  document.getElementById('shoppingListContent').innerHTML = content;
+  modal.style.display = 'flex';
+}
+
+function initializeShoppingListModal() {
+  const modal = document.getElementById('shoppingListModal');
+  if (!modal) return;
+  const printBtn = document.getElementById('printShoppingListBtn');
+  const copyBtn = document.getElementById('copyShoppingListBtn');
+  const closeBtns = modal.querySelectorAll('.close-btn');
+
+  closeBtns.forEach(btn => btn.addEventListener('click', () => modal.style.display = 'none'));
+
+  copyBtn.addEventListener('click', () => {
+    const content = document.getElementById('shoppingListContent');
+    let textToCopy = `${document.getElementById('shoppingListTitle').textContent}\n\n`;
+    content.querySelectorAll('h4').forEach(category => {
+      textToCopy += `${category.textContent}\n`;
+      category.nextElementSibling.querySelectorAll('li').forEach(item => {
+        const isChecked = item.querySelector('input[type="checkbox"]').checked;
+        textToCopy += `[${isChecked ? 'x' : ' '}] ${item.querySelector('label').textContent}\n`;
+      });
+      textToCopy += '\n';
+    });
+
+    navigator.clipboard.writeText(textToCopy.trim()).then(() => {
+      const originalText = copyBtn.innerHTML;
+      copyBtn.innerHTML = '✅ Kopiert!';
+      setTimeout(() => { copyBtn.innerHTML = originalText; }, 2000);
+    }).catch(err => console.error('Could not copy text: ', err));
+  });
+
+  printBtn.addEventListener('click', () => {
+    const content = document.getElementById('shoppingListContent').innerHTML;
+    const title = document.getElementById('shoppingListTitle').textContent;
+    const printWindow = window.open('', '', 'height=600,width=800');
+    printWindow.document.write('<html><head><title>' + title + '</title>');
+    printWindow.document.write('<style>body{font-family:sans-serif} ul{list-style:none; padding:0} li{margin-bottom:5px} h4{border-bottom:1px solid #ccc;padding-bottom:5px}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<h1>' + title + '</h1>');
+    printWindow.document.write(content);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  });
+}
+
+function getAggregatedIngredients(meals, personCount) {
+    const weeklyIngredients = {};
+    meals.forEach(mealRef => {
+        const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
+        meal.ingredients.forEach(ingredient => {
+            const key = `${ingredient.name}-${ingredient.unit}`;
+            if (weeklyIngredients[key]) {
+                weeklyIngredients[key].quantity += ingredient.quantity;
+            } else {
+                weeklyIngredients[key] = { ...ingredient };
+            }
+        });
+    });
+
+    const categorized = {};
+    Object.values(weeklyIngredients).forEach(ingredient => {
+        if (!categorized[ingredient.category]) {
+            categorized[ingredient.category] = [];
+        }
+        const scaledQuantity = ingredient.quantity * personCount;
+        // Simple logic to handle pluralization for "Stück"
+        const unit = (scaledQuantity > 1 && ingredient.unit === 'Stück') ? 'Stück' : ingredient.unit;
+        categorized[ingredient.category].push({
+            name: ingredient.name,
+            quantity: scaledQuantity,
+            unit: unit
+        });
+    });
+    return categorized;
+}
+
+function generateShoppingListHtml(categorizedIngredients) {
+    let html = '';
+    let itemCounter = 0;
+    const sortedCategories = Object.keys(categorizedIngredients).sort();
+
+    for (const category of sortedCategories) {
+        html += `<h4>${category}</h4><ul>`;
+        categorizedIngredients[category].forEach(ingredient => {
+            const itemId = `item-${itemCounter++}`;
+            html += `
+                <li>
+                    <input type="checkbox" id="${itemId}">
+                    <label for="${itemId}">${ingredient.quantity} ${ingredient.unit} ${ingredient.name}</label>
+                </li>
+            `;
+        });
+        html += '</ul>';
+    }
+    return html;
+}
+
+
 function createShoppingListForDay(dayIndex) {
   const dayPlan = mealData.weekPlan[dayIndex];
   const personCount = document.getElementById('person-count').value || 1;
-  const categorizedIngredients = {};
-  dayPlan.meals.forEach(mealRef => {
-    const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
-    meal.ingredients.forEach(ingredient => {
-      if (!categorizedIngredients[ingredient.category]) {
-        categorizedIngredients[ingredient.category] = [];
-      }
-      const scaledQuantity = ingredient.quantity * personCount;
-      categorizedIngredients[ingredient.category].push(`${scaledQuantity} ${ingredient.unit} ${ingredient.name}`);
-    });
-  });
-  let shoppingListHtml = `<h3>Einkaufsliste für ${mealData.weekPlan[dayIndex].day}</h3>`;
-  for (const category in categorizedIngredients) {
-    shoppingListHtml += `<h4>${category}</h4><ul>`;
-    categorizedIngredients[category].forEach(ingredient => {
-      shoppingListHtml += `<li>${ingredient}</li>`;
-    });
-    shoppingListHtml += '</ul>';
-  }
-  showModal(shoppingListHtml);
+  const categorizedIngredients = getAggregatedIngredients(dayPlan.meals, personCount);
+  const shoppingListHtml = generateShoppingListHtml(categorizedIngredients);
+  const title = `Einkaufsliste für ${mealData.weekPlan[dayIndex].day}`;
+  openShoppingListModal(title, shoppingListHtml);
 }
 
 function populateFoodSelector() {
@@ -493,36 +583,10 @@ function initializeOxalateCalculator() {
 }
 
 function createWeeklyShoppingList() {
-  const weeklyIngredients = {};
-  const personCount = document.getElementById('person-count').value || 1;
-  mealData.weekPlan.forEach(dayPlan => {
-    dayPlan.meals.forEach(mealRef => {
-      const meal = mealData.mealDatabase[mealRef.type][mealRef.mealIndex];
-      meal.ingredients.forEach(ingredient => {
-        const key = `${ingredient.name}-${ingredient.unit}`;
-        if (weeklyIngredients[key]) {
-          weeklyIngredients[key].quantity += ingredient.quantity;
-        } else {
-          weeklyIngredients[key] = { ...ingredient };
-        }
-      });
-    });
-  });
-  const categorizedIngredients = {};
-  Object.values(weeklyIngredients).forEach(ingredient => {
-    if (!categorizedIngredients[ingredient.category]) {
-      categorizedIngredients[ingredient.category] = [];
-    }
-    const scaledQuantity = ingredient.quantity * personCount;
-    categorizedIngredients[ingredient.category].push(`${scaledQuantity} ${ingredient.unit} ${ingredient.name}`);
-  });
-  let shoppingListHtml = '<h3>Wocheneinkaufsliste</h3>';
-  for (const category in categorizedIngredients) {
-    shoppingListHtml += `<h4>${category}</h4><ul>`;
-    categorizedIngredients[category].forEach(ingredient => {
-      shoppingListHtml += `<li>${ingredient}</li>`;
-    });
-    shoppingListHtml += '</ul>';
-  }
-  showModal(shoppingListHtml);
+    const personCount = document.getElementById('person-count').value || 1;
+    const allMeals = mealData.weekPlan.flatMap(day => day.meals);
+    const categorizedIngredients = getAggregatedIngredients(allMeals, personCount);
+    const shoppingListHtml = generateShoppingListHtml(categorizedIngredients);
+    const title = 'Wocheneinkaufsliste';
+    openShoppingListModal(title, shoppingListHtml);
 }
