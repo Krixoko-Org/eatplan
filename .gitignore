@@ -1,5 +1,5 @@
 # Log files
-http_server.log
+*.log
 
-# Temporary verification files
+# Jules scratch directory
 jules-scratch/
