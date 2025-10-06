@@ -76,15 +76,25 @@ function renderBlogIndex() {
   // Sort posts by ID descending to show newest first
   const sortedPosts = [...mealData.blogPosts].sort((a, b) => b.id - a.id);
   sortedPosts.forEach(post => {
-    const article = document.createElement('article');
-    article.className = 'blog-summary';
-    article.innerHTML = `
-      <h2><a href="blog-post.html?id=${post.id}">${post.title}</a></h2>
-      <p class="summary-meta">Verfasst am ${post.date}</p>
-      <p>${post.summary}</p>
-      <a href="blog-post.html?id=${post.id}" class="btn btn-secondary">Weiterlesen &rarr;</a>
+    const card = document.createElement('div');
+    card.className = 'blog-card';
+
+    // Use a consistent placeholder image based on post ID
+    const imageUrl = `https://picsum.photos/seed/${post.id}/400/200`;
+
+    card.innerHTML = `
+      <div class="card-image" style="background-image: url('${imageUrl}')"></div>
+      <div class="card-content">
+        <h3 class="card-title">
+          <a href="blog-post.html?id=${post.id}">${post.title}</a>
+        </h3>
+        <p class="card-summary">${post.summary}</p>
+        <div class="card-footer">
+          <span>${post.date}</span>
+        </div>
+      </div>
     `;
-    container.appendChild(article);
+    container.appendChild(card);
   });
 }
 
