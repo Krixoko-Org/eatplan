@@ -467,15 +467,31 @@ function initializeShoppingListModal() {
 
   closeBtns.forEach(btn => btn.addEventListener('click', () => modal.style.display = 'none'));
 
+  // Event delegation for checkbox styling
+  const content = document.getElementById('shoppingListContent');
+  content.addEventListener('change', (e) => {
+    if (e.target.classList.contains('shopping-checkbox')) {
+      const li = e.target.closest('.shopping-item');
+      if (li) {
+        li.classList.toggle('is-checked', e.target.checked);
+      }
+    }
+  });
+
   copyBtn.addEventListener('click', () => {
     const content = document.getElementById('shoppingListContent');
     let textToCopy = `${document.getElementById('shoppingListTitle').textContent}\n\n`;
-    content.querySelectorAll('h4').forEach(category => {
+    content.querySelectorAll('.shopping-category').forEach(category => {
       textToCopy += `${category.textContent}\n`;
-      category.nextElementSibling.querySelectorAll('li').forEach(item => {
-        const isChecked = item.querySelector('input[type="checkbox"]').checked;
-        textToCopy += `[${isChecked ? 'x' : ' '}] ${item.querySelector('label').textContent}\n`;
-      });
+      // Find the UL immediately following the category
+      const ul = category.nextElementSibling;
+      if (ul && ul.tagName === 'UL') {
+          ul.querySelectorAll('.shopping-item').forEach(item => {
+            const isChecked = item.querySelector('input[type="checkbox"]').checked;
+            const labelText = item.querySelector('.item-text').textContent;
+            textToCopy += `[${isChecked ? 'x' : ' '}] ${labelText}\n`;
+          });
+      }
       textToCopy += '\n';
     });
 
@@ -534,23 +550,27 @@ function getAggregatedIngredients(meals, personCount) {
 }
 
 function generateShoppingListHtml(categorizedIngredients) {
-    let html = '';
+    let html = '<div class="shopping-list-container">';
     let itemCounter = 0;
     const sortedCategories = Object.keys(categorizedIngredients).sort();
 
     for (const category of sortedCategories) {
-        html += `<h4>${category}</h4><ul>`;
+        html += `<h4 class="shopping-category">${category}</h4><ul class="shopping-list">`;
         categorizedIngredients[category].forEach(ingredient => {
             const itemId = `item-${itemCounter++}`;
             html += `
-                <li>
-                    <input type="checkbox" id="${itemId}">
-                    <label for="${itemId}">${ingredient.quantity} ${ingredient.unit} ${ingredient.name}</label>
+                <li class="shopping-item">
+                    <input type="checkbox" id="${itemId}" class="shopping-checkbox">
+                    <label for="${itemId}" class="shopping-label">
+                        <span class="custom-checkbox"></span>
+                        <span class="item-text">${ingredient.quantity} ${ingredient.unit} ${ingredient.name}</span>
+                    </label>
                 </li>
             `;
         });
         html += '</ul>';
     }
+    html += '</div>';
     return html;
 }
 
