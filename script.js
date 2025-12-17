@@ -75,27 +75,61 @@ function renderBlogIndex() {
   container.innerHTML = '';
   // Sort posts by ID descending to show newest first
   const sortedPosts = [...mealData.blogPosts].sort((a, b) => b.id - a.id);
-  sortedPosts.forEach(post => {
-    const card = document.createElement('div');
-    card.className = 'blog-card';
 
-    // Use a consistent placeholder image based on post ID
-    const imageUrl = `https://picsum.photos/seed/${post.id}/400/200`;
+  if (sortedPosts.length === 0) {
+      container.innerHTML = '<p>Keine Beiträge gefunden.</p>';
+      return;
+  }
 
-    card.innerHTML = `
-      <div class="card-image" style="background-image: url('${imageUrl}')"></div>
-      <div class="card-content">
-        <h3 class="card-title">
-          <a href="blog-post.html?id=${post.id}">${post.title}</a>
-        </h3>
-        <p class="card-summary">${post.summary}</p>
-        <div class="card-footer">
-          <span>${post.date}</span>
-        </div>
-      </div>
-    `;
-    container.appendChild(card);
-  });
+  // 1. Hero Section (First Post)
+  const heroPost = sortedPosts[0];
+  const heroEl = document.createElement('div');
+  heroEl.className = 'blog-hero';
+
+  const heroImage = `https://picsum.photos/seed/${heroPost.id}/800/400`;
+
+  heroEl.innerHTML = `
+    <div class="hero-content">
+      <span class="hero-tag">Neuester Beitrag</span>
+      <h2 class="hero-title">
+        <a href="blog-post.html?id=${heroPost.id}">${heroPost.title}</a>
+      </h2>
+      <p class="hero-summary">${heroPost.summary}</p>
+      <a href="blog-post.html?id=${heroPost.id}" class="btn">Weiterlesen</a>
+    </div>
+    <div class="hero-image" style="background-image: url('${heroImage}')"></div>
+  `;
+  container.appendChild(heroEl);
+
+  // 2. Grid Section (Remaining Posts)
+  if (sortedPosts.length > 1) {
+      const gridEl = document.createElement('div');
+      gridEl.className = 'blog-grid';
+
+      for (let i = 1; i < sortedPosts.length; i++) {
+        const post = sortedPosts[i];
+        const card = document.createElement('div');
+        card.className = 'blog-card';
+
+        // Use a consistent placeholder image based on post ID
+        const imageUrl = `https://picsum.photos/seed/${post.id}/400/220`;
+
+        card.innerHTML = `
+          <a href="blog-post.html?id=${post.id}" class="card-image" style="background-image: url('${imageUrl}')" aria-label="${post.title}"></a>
+          <div class="card-content">
+            <h3 class="card-title">
+              <a href="blog-post.html?id=${post.id}">${post.title}</a>
+            </h3>
+            <p class="card-summary">${post.summary}</p>
+            <div class="card-footer">
+              <span>${post.date}</span>
+            </div>
+          </div>
+        `;
+        gridEl.appendChild(card);
+      }
+      container.appendChild(gridEl);
+  }
 }
 
 function renderBlogPost() {
